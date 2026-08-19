@@ -1,1 +1,21 @@
 
+# Check the 18 duplicate employee codes
+duplicates = employee_master_new[
+    employee_master_new["EMP_CODE_STD"].duplicated(keep=False)
+].sort_values("EMP_CODE_STD")
+
+print("Duplicate rows:", len(duplicates))
+print("Duplicate employee codes:", duplicates["EMP_CODE_STD"].nunique())
+
+print(
+    duplicates[
+        [
+            "EMP_CODE_STD",
+            "Employee Code",
+            "Employee Name",
+            "Effective Start Date",
+            "Effective End Date",
+            "Employee Status"
+        ]
+    ].to_string(index=False)
+)
