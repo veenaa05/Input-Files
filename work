@@ -1,1 +1,17 @@
+print("Duplicate keys in OT features:",
+      ot_features["EMP_CODE_STD"].duplicated().sum())
 
+print(
+    ot_features[
+        ot_features["EMP_CODE_STD"].duplicated(keep=False)
+    ].sort_values("EMP_CODE_STD")
+)
+
+print("\nDuplicate keys in Leave features:",
+      leave_features["EMP_CODE_STD"].duplicated().sum())
+
+print(
+    leave_features[
+        leave_features["EMP_CODE_STD"].duplicated(keep=False)
+    ].sort_values("EMP_CODE_STD")
+)
