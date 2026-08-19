@@ -1,1 +1,62 @@
 
+# ============================================
+# CHECK EMPLOYEE CODE FORMATS
+# ============================================
+
+code_columns = {
+    "Employee Master": employee_master_new["Employee Code"],
+    "Leave Application": leave_application["Employee Code"],
+    "Leave Balance": monthly_leave_balance["Employee Code"],
+    "OT Summary": overtime_1["EMP CODE"],
+    "OT Daily": overtime_2["EMP CODE"],
+}
+
+for name, s in code_columns.items():
+    s = s.dropna().astype(str)
+
+    print("\n" + "=" * 70)
+    print(name)
+    print("dtype:", s.dtype)
+    print("Sample values:", s.head(10).tolist())
+    print("Sample repr:", [repr(x) for x in s.head(10)])
+    print("Lengths:", s.str.len().value_counts().sort_index().to_dict())
+
+
+
+
+# Check whether numeric conversion makes the codes match
+
+master_num = pd.to_numeric(
+    employee_master_new["Employee Code"],
+    errors="coerce"
+)
+
+for name, col in {
+    "Leave Application": "Employee Code",
+    "Leave Balance": "Employee Code",
+}.items():
+
+    if name == "Leave Application":
+        other_num = pd.to_numeric(
+            leave_application[col],
+            errors="coerce"
+        )
+    else:
+        other_num = pd.to_numeric(
+            monthly_leave_balance[col],
+            errors="coerce"
+        )
+
+    print(
+        name,
+        "numeric matches:",
+        master_num.isin(other_num).sum()
+    )
+
+
+ot_num = pd.to_numeric(overtime_1["EMP CODE"], errors="coerce")
+
+print(
+    "OT Summary numeric matches:",
+    master_num.isin(ot_num).sum()
+)
