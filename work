@@ -1,1 +1,36 @@
+import pandas as pd
+import os
 
+data_folder = r"D:\veena.sharma\My Documents\PROJECTS\PREDICTIVE_ANALYSIS\Updated INPUT Files"
+
+# Load files
+employee_master_new = pd.read_csv(
+    os.path.join(data_folder, "Employee Master Report.csv")
+)
+
+leave_application = pd.read_excel(
+    os.path.join(data_folder, "Leave Application Report1.xlsx")
+)
+
+monthly_leave_balance = pd.read_excel(
+    os.path.join(data_folder, "Monthly Leave Balance Report.xlsx")
+)
+
+overtime_1 = pd.read_csv(
+    os.path.join(data_folder, "Overtime Upload Report_20260814061503723 (2).csv")
+)
+
+overtime_2 = pd.read_csv(
+    os.path.join(data_folder, "Overtime Upload Report_20260814061513421.csv")
+)
+
+resignation = pd.read_csv(
+    os.path.join(data_folder, "Resignation Report_20260813132712751.csv")
+)
+
+print("Employee Master:", employee_master_new.shape)
+print("Leave Application:", leave_application.shape)
+print("Monthly Leave Balance:", monthly_leave_balance.shape)
+print("Overtime 1:", overtime_1.shape)
+print("Overtime 2:", overtime_2.shape)
+print("Resignation:", resignation.shape)
