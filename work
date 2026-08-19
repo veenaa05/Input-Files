@@ -1,1 +1,176 @@
+# ============================================================
+# STEP 4: EMPLOYEE-LEVEL OT TREND FEATURES
+# ============================================================
 
+ot_trend_features = (
+    ot_long
+    .groupby("EMP_CODE_STD")
+    .agg(
+        OT_Lag_1_Day=("OT_Lag_1_Day", "last"),
+        OT_Rolling_7D=("OT_Rolling_7D", "last"),
+        OT_Rolling_14D=("OT_Rolling_14D", "last")
+    )
+    .reset_index()
+)
+
+# Fill first-day / unavailable lag values
+trend_cols = [
+    "OT_Lag_1_Day",
+    "OT_Rolling_7D",
+    "OT_Rolling_14D"
+]
+
+ot_trend_features[trend_cols] = (
+    ot_trend_features[trend_cols]
+    .fillna(0)
+)
+
+print("OT trend feature shape:")
+print(ot_trend_features.shape)
+
+print("\nSample:")
+print(ot_trend_features.head())
+
+
+
+
+
+# ============================================================
+# STEP 5: ADD OT TREND FEATURES TO BURNOUT DATA
+# ============================================================
+
+burnout_features = burnout_data.copy()
+
+burnout_features = burnout_features.merge(
+    ot_trend_features,
+    on="EMP_CODE_STD",
+    how="left",
+    validate="one_to_one"
+)
+
+# Employees without OT data get zero
+burnout_features[trend_cols] = (
+    burnout_features[trend_cols]
+    .fillna(0)
+)
+
+print("Burnout dataset shape:", burnout_features.shape)
+
+print("\nDuplicate employees:",
+      burnout_features["EMP_CODE_STD"].duplicated().sum())
+
+print("\nNew OT trend columns:")
+print(trend_cols)
+
+
+
+
+
+# ============================================================
+# STEP 6: TENURE FEATURE
+# ============================================================
+
+burnout_features["Actual Join Date"] = pd.to_datetime(
+    burnout_features["Actual Join Date"],
+    errors="coerce"
+)
+
+reference_date = pd.Timestamp("2026-06-30")
+
+burnout_features["Tenure_Years"] = (
+    (
+        reference_date -
+        burnout_features["Actual Join Date"]
+    ).dt.days / 365.25
+)
+
+burnout_features["Tenure_Years"] = (
+    burnout_features["Tenure_Years"]
+    .clip(lower=0)
+)
+
+print(
+    burnout_features[
+        [
+            "EMP_CODE_STD",
+            "Actual Join Date",
+            "Tenure_Years"
+        ]
+    ].head()
+)
+
+
+
+
+# ============================================================
+# STEP 7: FINAL BURNOUT MODEL FEATURES
+# ============================================================
+
+burnout_model_features = [
+    # OT intensity
+    "OT_Total_Hours",
+    "OT_Avg_Daily",
+    "OT_Max_Daily",
+    "OT_Days",
+    "OT_High_Days",
+
+    # OT type
+    "OT_Chargeable",
+    "OT_Non_Chargeable",
+
+    # OT trend
+    "OT_Lag_1_Day",
+    "OT_Rolling_7D",
+    "OT_Rolling_14D",
+
+    # Leave behaviour
+    "Leave_Total_Days",
+    "Leave_Applications",
+    "Leave_Avg_Days",
+    "Leave_Max_Days",
+    "Leave_Pending_Applications",
+
+    # Employee experience
+    "Tenure_Years"
+]
+
+print("Number of burnout model features:",
+      len(burnout_model_features))
+
+print("\nFeatures:")
+for i, col in enumerate(burnout_model_features, 1):
+    print(i, col)
+
+
+
+# ============================================================
+# STEP 8: FINAL DATA QUALITY CHECK
+# ============================================================
+
+X_burnout = burnout_features[
+    ["EMP_CODE_STD"] + burnout_model_features
+].copy()
+
+print("Final burnout feature dataset shape:")
+print(X_burnout.shape)
+
+print("\nMissing values:")
+print(
+    X_burnout[burnout_model_features]
+    .isna()
+    .sum()
+)
+
+print("\nInfinite values:")
+print(
+    np.isinf(
+        X_burnout[burnout_model_features]
+        .select_dtypes(include=np.number)
+    ).sum().sum()
+)
+
+print("\nSummary:")
+print(
+    X_burnout[burnout_model_features]
+    .describe().T
+)
