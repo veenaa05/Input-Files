@@ -1,36 +1,50 @@
-import pandas as pd
-import os
 
-data_folder = r"D:\veena.sharma\My Documents\PROJECTS\PREDICTIVE_ANALYSIS\Updated INPUT Files"
+============================================================
+Leave Application
+Columns:
+['Group Name', 'Entity', 'Employee Code', 'Employee Name', 'Branch', 'Department', 'Grade', 'Designation', 'Date Of Joining', 'Leave Application Id', 'Application Date', 'Leave Start Date', 'Leave End Date', 'Reason', 'Leave Type', 'Actual Leave Days', 'PH/WO Excluded Days', 'Total Days', 'Leave Status', 'Remarks', 'Approver Name', 'Approved Date', 'Employee Status', 'Ref-Leave Application Id', 'Accounting Year', 'Unnamed: 25']
 
-# Load files
-employee_master_new = pd.read_csv(
-    os.path.join(data_folder, "Employee Master Report.csv")
-)
+============================================================
+Monthly Leave Balance
+Columns:
+['Entity Name', 'Employee Code', 'Employee Name', 'Band', 'Grade', 'Division', 'Department', 'Sub Department', 'Designation', 'Date of joining', 'Date of Leaving', 'Employee Category', 'Employee Status', 'Reporting Manager', 'Region', 'Cost Center', 'State', 'City', 'Branch', 'Leave Type', 'Year', 'Month', 'Lapsed', 'Opening', 'Accrual', 'Consumed Leaves', 'Balance As On Date', 'Future Dated Leave', 'Final Closing Balance', 'Unnamed: 29']
 
-leave_application = pd.read_excel(
-    os.path.join(data_folder, "Leave Application Report1.xlsx")
-)
+============================================================
+Overtime Summary
+Columns:
+['EMP CODE', 'EMP NAME', 'BRANCH NAME', 'CITY NAME', 'JOIN DATE', 'LAST WORKING DATE', 'DESIGNATION', 'EMPLOYEE CATEGORY', 'COST CENTRE CODE', 'COST CENTRE NAME', 'SITE CODE', 'SITE NAME', 'PAY CYCLE', 'CHARGEABLE TOTAL', 'NON CHARGEABLE TOTAL', 'TOTAL', ' PF CALCULATION TYPE', ' CHARGEBLEOT FORMULA ', ' NONCHARGEBLE OT FORMULA']
 
-monthly_leave_balance = pd.read_excel(
-    os.path.join(data_folder, "Monthly Leave Balance Report.xlsx")
-)
+============================================================
+Overtime Daily
+Columns:
+['EMP CODE', 'EMP NAME', 'BRANCH NAME', 'CITY NAME', 'JOIN DATE', 'LAST WORKING DATE', 'DESIGNATION', 'EMPLOYEE CATEGORY', 'COST CENTRE CODE', 'COST CENTRE NAME', 'SITE CODE', 'SITE NAME', 'PAY CYCLE', '01-JUN-26_CH', '01-JUN-26_NCH', '01-JUN-26_TOT', '02-JUN-26_CH', '02-JUN-26_NCH', '02-JUN-26_TOT', '03-JUN-26_CH', '03-JUN-26_NCH', '03-JUN-26_TOT', '04-JUN-26_CH', '04-JUN-26_NCH', '04-JUN-26_TOT', '05-JUN-26_CH', '05-JUN-26_NCH', '05-JUN-26_TOT', '06-JUN-26_CH', '06-JUN-26_NCH', '06-JUN-26_TOT', '07-JUN-26_CH', '07-JUN-26_NCH', '07-JUN-26_TOT', '08-JUN-26_CH', '08-JUN-26_NCH', '08-JUN-26_TOT', '09-JUN-26_CH', '09-JUN-26_NCH', '09-JUN-26_TOT', '10-JUN-26_CH', '10-JUN-26_NCH', '10-JUN-26_TOT', '11-JUN-26_CH', '11-JUN-26_NCH', '11-JUN-26_TOT', '12-JUN-26_CH', '12-JUN-26_NCH', '12-JUN-26_TOT', '13-JUN-26_CH', '13-JUN-26_NCH', '13-JUN-26_TOT', '14-JUN-26_CH', '14-JUN-26_NCH', '14-JUN-26_TOT', '15-JUN-26_CH', '15-JUN-26_NCH', '15-JUN-26_TOT', '16-JUN-26_CH', '16-JUN-26_NCH', '16-JUN-26_TOT', '17-JUN-26_CH', '17-JUN-26_NCH', '17-JUN-26_TOT', '18-JUN-26_CH', '18-JUN-26_NCH', '18-JUN-26_TOT', '19-JUN-26_CH', '19-JUN-26_NCH', '19-JUN-26_TOT', '20-JUN-26_CH', '20-JUN-26_NCH', '20-JUN-26_TOT', '21-JUN-26_CH', '21-JUN-26_NCH', '21-JUN-26_TOT', '22-JUN-26_CH', '22-JUN-26_NCH', '22-JUN-26_TOT', '23-JUN-26_CH', '23-JUN-26_NCH', '23-JUN-26_TOT', '24-JUN-26_CH', '24-JUN-26_NCH', '24-JUN-26_TOT', '25-JUN-26_CH', '25-JUN-26_NCH', '25-JUN-26_TOT', '26-JUN-26_CH', '26-JUN-26_NCH', '26-JUN-26_TOT', '27-JUN-26_CH', '27-JUN-26_NCH', '27-JUN-26_TOT', '28-JUN-26_CH', '28-JUN-26_NCH', '28-JUN-26_TOT', '29-JUN-26_CH', '29-JUN-26_NCH', '29-JUN-26_TOT', '30-JUN-26_CH', '30-JUN-26_NCH', '30-JUN-26_TOT', 'CHARGEABLE TOTAL', 'NON CHARGEABLE TOTAL', 'TOTAL', ' PF CALCULATION TYPE', ' CHARGEBLEOT FORMULA ', ' NONCHARGEBLE OT FORMULA']
 
-overtime_1 = pd.read_csv(
-    os.path.join(data_folder, "Overtime Upload Report_20260814061503723 (2).csv")
-)
+============================================================
+Resignation
+Columns:
+['Company Name', 'Employee Code', 'Employee First Name', 'Employee Middle Name', 'Employee Last Name', 'Employee Name', 'Branch', 'Department', 'Division', 'Grade', 'Band', 'Designation', 'Reporting Manager', 'Reporting Partner', 'Reporting Md', 'Date Of Joining', 'City Name', 'Cost Center', 'State Name', 'Resignation Id', 'Resignation Code', 'Resignation Date', 'Resignation Submit Type', 'Lwd As Per Notice Period', 'Requested Relieving Date', 'Agreed Lwd', 'Eligibility To Rehire', 'Eligiblity Reason', 'Resignation Type', 'Resignation Reason', 'Employee Category', 'Contact No', 'Address', 'Personal Email Id', 'Official Email Id', 'Due Clearance Date', 'Execution Handover', 'Resignation Status', 'Resignation Level', 'Submitted By', 'Submitted Date', 'Approved By', 'Approved Date']
 
-overtime_2 = pd.read_csv(
-    os.path.join(data_folder, "Overtime Upload Report_20260814061513421.csv")
-)
+Leave Application
+Shape: (2554, 26)
+Columns: ['Group Name', 'Entity', 'Employee Code', 'Employee Name', 'Branch', 'Department', 'Grade', 'Designation', 'Date Of Joining', 'Leave Application Id', 'Application Date', 'Leave Start Date', 'Leave End Date', 'Reason', 'Leave Type', 'Actual Leave Days', 'PH/WO Excluded Days', 'Total Days', 'Leave Status', 'Remarks', 'Approver Name', 'Approved Date', 'Employee Status', 'Ref-Leave Application Id', 'Accounting Year', 'Unnamed: 25']
+Possible employee ID columns: ['Employee Code', 'Employee Name', 'Employee Status']
 
-resignation = pd.read_csv(
-    os.path.join(data_folder, "Resignation Report_20260813132712751.csv")
-)
+Monthly Leave Balance
+Shape: (100, 30)
+Columns: ['Entity Name', 'Employee Code', 'Employee Name', 'Band', 'Grade', 'Division', 'Department', 'Sub Department', 'Designation', 'Date of joining', 'Date of Leaving', 'Employee Category', 'Employee Status', 'Reporting Manager', 'Region', 'Cost Center', 'State', 'City', 'Branch', 'Leave Type', 'Year', 'Month', 'Lapsed', 'Opening', 'Accrual', 'Consumed Leaves', 'Balance As On Date', 'Future Dated Leave', 'Final Closing Balance', 'Unnamed: 29']
+Possible employee ID columns: ['Employee Code', 'Employee Name', 'Employee Category', 'Employee Status']
 
-print("Employee Master:", employee_master_new.shape)
-print("Leave Application:", leave_application.shape)
-print("Monthly Leave Balance:", monthly_leave_balance.shape)
-print("Overtime 1:", overtime_1.shape)
-print("Overtime 2:", overtime_2.shape)
-print("Resignation:", resignation.shape)
+Overtime Summary
+Shape: (4539, 19)
+Columns: ['EMP CODE', 'EMP NAME', 'BRANCH NAME', 'CITY NAME', 'JOIN DATE', 'LAST WORKING DATE', 'DESIGNATION', 'EMPLOYEE CATEGORY', 'COST CENTRE CODE', 'COST CENTRE NAME', 'SITE CODE', 'SITE NAME', 'PAY CYCLE', 'CHARGEABLE TOTAL', 'NON CHARGEABLE TOTAL', 'TOTAL', ' PF CALCULATION TYPE', ' CHARGEBLEOT FORMULA ', ' NONCHARGEBLE OT FORMULA']
+Possible employee ID columns: ['EMP CODE', 'EMP NAME', 'EMPLOYEE CATEGORY', 'COST CENTRE CODE', 'SITE CODE']
+
+Overtime Daily
+Shape: (4539, 109)
+Columns: ['EMP CODE', 'EMP NAME', 'BRANCH NAME', 'CITY NAME', 'JOIN DATE', 'LAST WORKING DATE', 'DESIGNATION', 'EMPLOYEE CATEGORY', 'COST CENTRE CODE', 'COST CENTRE NAME', 'SITE CODE', 'SITE NAME', 'PAY CYCLE', '01-JUN-26_CH', '01-JUN-26_NCH', '01-JUN-26_TOT', '02-JUN-26_CH', '02-JUN-26_NCH', '02-JUN-26_TOT', '03-JUN-26_CH', '03-JUN-26_NCH', '03-JUN-26_TOT', '04-JUN-26_CH', '04-JUN-26_NCH', '04-JUN-26_TOT', '05-JUN-26_CH', '05-JUN-26_NCH', '05-JUN-26_TOT', '06-JUN-26_CH', '06-JUN-26_NCH', '06-JUN-26_TOT', '07-JUN-26_CH', '07-JUN-26_NCH', '07-JUN-26_TOT', '08-JUN-26_CH', '08-JUN-26_NCH', '08-JUN-26_TOT', '09-JUN-26_CH', '09-JUN-26_NCH', '09-JUN-26_TOT', '10-JUN-26_CH', '10-JUN-26_NCH', '10-JUN-26_TOT', '11-JUN-26_CH', '11-JUN-26_NCH', '11-JUN-26_TOT', '12-JUN-26_CH', '12-JUN-26_NCH', '12-JUN-26_TOT', '13-JUN-26_CH', '13-JUN-26_NCH', '13-JUN-26_TOT', '14-JUN-26_CH', '14-JUN-26_NCH', '14-JUN-26_TOT', '15-JUN-26_CH', '15-JUN-26_NCH', '15-JUN-26_TOT', '16-JUN-26_CH', '16-JUN-26_NCH', '16-JUN-26_TOT', '17-JUN-26_CH', '17-JUN-26_NCH', '17-JUN-26_TOT', '18-JUN-26_CH', '18-JUN-26_NCH', '18-JUN-26_TOT', '19-JUN-26_CH', '19-JUN-26_NCH', '19-JUN-26_TOT', '20-JUN-26_CH', '20-JUN-26_NCH', '20-JUN-26_TOT', '21-JUN-26_CH', '21-JUN-26_NCH', '21-JUN-26_TOT', '22-JUN-26_CH', '22-JUN-26_NCH', '22-JUN-26_TOT', '23-JUN-26_CH', '23-JUN-26_NCH', '23-JUN-26_TOT', '24-JUN-26_CH', '24-JUN-26_NCH', '24-JUN-26_TOT', '25-JUN-26_CH', '25-JUN-26_NCH', '25-JUN-26_TOT', '26-JUN-26_CH', '26-JUN-26_NCH', '26-JUN-26_TOT', '27-JUN-26_CH', '27-JUN-26_NCH', '27-JUN-26_TOT', '28-JUN-26_CH', '28-JUN-26_NCH', '28-JUN-26_TOT', '29-JUN-26_CH', '29-JUN-26_NCH', '29-JUN-26_TOT', '30-JUN-26_CH', '30-JUN-26_NCH', '30-JUN-26_TOT', 'CHARGEABLE TOTAL', 'NON CHARGEABLE TOTAL', 'TOTAL', ' PF CALCULATION TYPE', ' CHARGEBLEOT FORMULA ', ' NONCHARGEBLE OT FORMULA']
+Possible employee ID columns: ['EMP CODE', 'EMP NAME', 'EMPLOYEE CATEGORY', 'COST CENTRE CODE', 'SITE CODE']
+
+Resignation
+Shape: (501, 43)
+Columns: ['Company Name', 'Employee Code', 'Employee First Name', 'Employee Middle Name', 'Employee Last Name', 'Employee Name', 'Branch', 'Department', 'Division', 'Grade', 'Band', 'Designation', 'Reporting Manager', 'Reporting Partner', 'Reporting Md', 'Date Of Joining', 'City Name', 'Cost Center', 'State Name', 'Resignation Id', 'Resignation Code', 'Resignation Date', 'Resignation Submit Type', 'Lwd As Per Notice Period', 'Requested Relieving Date', 'Agreed Lwd', 'Eligibility To Rehire', 'Eligiblity Reason', 'Resignation Type', 'Resignation Reason', 'Employee Category', 'Contact No', 'Address', 'Personal Email Id', 'Official Email Id', 'Due Clearance Date', 'Execution Handover', 'Resignation Status', 'Resignation Level', 'Submitted By', 'Submitted Date', 'Approved By', 'Approved Date']
+Possible employee ID columns: ['Employee Code', 'Employee First Name', 'Employee Middle Name', 'Employee Last Name', 'Employee Name', 'Resignation Code', 'Employee Category']
