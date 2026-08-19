@@ -1,1 +1,45 @@
+# ============================================
+# CREATE EMPLOYEE-LEVEL OT FEATURES
+# ============================================
 
+ot = overtime_2.copy()
+
+# Make sure OT values are numeric
+total_cols = [c for c in ot.columns if c.endswith("_TOT")]
+chargeable_cols = [c for c in ot.columns if c.endswith("_CH")]
+non_chargeable_cols = [c for c in ot.columns if c.endswith("_NCH")]
+
+for col in total_cols + chargeable_cols + non_chargeable_cols:
+    ot[col] = pd.to_numeric(ot[col], errors="coerce").fillna(0)
+
+
+# Employee-level OT features
+ot_features = pd.DataFrame({
+    "EMP_CODE_STD": ot["EMP_CODE_STD"],
+
+    "OT_Total_Hours": ot[total_cols].sum(axis=1),
+
+    "OT_Avg_Daily": ot[total_cols].mean(axis=1),
+
+    "OT_Max_Daily": ot[total_cols].max(axis=1),
+
+    "OT_Days": (ot[total_cols] > 0).sum(axis=1),
+
+    "OT_High_Days": (ot[total_cols] >= 2).sum(axis=1),
+
+    "OT_Chargeable": ot[chargeable_cols].sum(axis=1),
+
+    "OT_Non_Chargeable": ot[non_chargeable_cols].sum(axis=1)
+})
+
+
+print("OT feature dataset shape:", ot_features.shape)
+
+print("\nOT feature columns:")
+print(ot_features.columns.tolist())
+
+print("\nSample:")
+print(ot_features.head())
+
+print("\nSummary:")
+print(ot_features.describe())
