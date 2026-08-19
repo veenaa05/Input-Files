@@ -1,13 +1,1 @@
-Burnout dataset shape: (20472, 29)
 
-Columns:
-['EMP_CODE_STD', 'Employee Name', 'Gender', 'Marital Status', 'Branch', 'Department', 'Sub Department', 'Designation', 'Grade', 'Band', 'Employee Category', 'Actual Join Date', 'Year Of Service (Current DOJ)', 'Probation Status', 'Movement Type', 'Point of Hire', 'Source of Hire', 'OT_Total_Hours', 'OT_Avg_Daily', 'OT_Max_Daily', 'OT_Days', 'OT_High_Days', 'OT_Chargeable', 'OT_Non_Chargeable', 'Leave_Total_Days', 'Leave_Applications', 'Leave_Avg_Days', 'Leave_Max_Days', 'Leave_Pending_Applications']
-
-OT coverage:
-1895
-
-Leave coverage:
-938
-
-Both OT + Leave:
-204
