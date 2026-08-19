@@ -1,1 +1,86 @@
+# ============================================
+# CREATE EMPLOYEE-LEVEL LEAVE FEATURES
+# ============================================
 
+leave = leave_application.copy()
+
+# Clean numeric leave days
+leave["Actual Leave Days"] = pd.to_numeric(
+    leave["Actual Leave Days"],
+    errors="coerce"
+).fillna(0)
+
+# Define leave status groups
+approved_status = [
+    "Approved by RM",
+    "Auto Approved"
+]
+
+pending_status = [
+    "Submitted"
+]
+
+# Flags
+leave["Is_Approved"] = leave["Leave Status"].isin(
+    approved_status
+)
+
+leave["Is_Pending"] = leave["Leave Status"].isin(
+    pending_status
+)
+
+
+# --------------------------------------------
+# Aggregate by employee
+# --------------------------------------------
+
+leave_features = (
+    leave.groupby("EMP_CODE_STD")
+    .agg(
+        Leave_Total_Days=(
+            "Actual Leave Days",
+            lambda x: x[leave.loc[x.index, "Is_Approved"]].sum()
+        ),
+
+        Leave_Applications=(
+            "Is_Approved",
+            "sum"
+        ),
+
+        Leave_Avg_Days=(
+            "Actual Leave Days",
+            lambda x: (
+                x[leave.loc[x.index, "Is_Approved"]].mean()
+                if leave.loc[x.index, "Is_Approved"].any()
+                else 0
+            )
+        ),
+
+        Leave_Max_Days=(
+            "Actual Leave Days",
+            lambda x: (
+                x[leave.loc[x.index, "Is_Approved"]].max()
+                if leave.loc[x.index, "Is_Approved"].any()
+                else 0
+            )
+        ),
+
+        Leave_Pending_Applications=(
+            "Is_Pending",
+            "sum"
+        )
+    )
+    .reset_index()
+)
+
+
+print("Leave feature dataset shape:", leave_features.shape)
+
+print("\nColumns:")
+print(leave_features.columns.tolist())
+
+print("\nSample:")
+print(leave_features.head())
+
+print("\nSummary:")
+print(leave_features.describe())
