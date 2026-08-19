@@ -1,87 +1,13 @@
+Burnout dataset shape: (20472, 29)
 
-# ============================================
-# BUILD BASE BURNOUT DATASET
-# ============================================
+Columns:
+['EMP_CODE_STD', 'Employee Name', 'Gender', 'Marital Status', 'Branch', 'Department', 'Sub Department', 'Designation', 'Grade', 'Band', 'Employee Category', 'Actual Join Date', 'Year Of Service (Current DOJ)', 'Probation Status', 'Movement Type', 'Point of Hire', 'Source of Hire', 'OT_Total_Hours', 'OT_Avg_Daily', 'OT_Max_Daily', 'OT_Days', 'OT_High_Days', 'OT_Chargeable', 'OT_Non_Chargeable', 'Leave_Total_Days', 'Leave_Applications', 'Leave_Avg_Days', 'Leave_Max_Days', 'Leave_Pending_Applications']
 
-# Keep only the employee-level columns we need from Master
-master_features = master_clean[
-    [
-        "EMP_CODE_STD",
-        "Employee Name",
-        "Gender",
-        "Marital Status",
-        "Branch",
-        "Department",
-        "Sub Department",
-        "Designation",
-        "Grade",
-        "Band",
-        "Employee Category",
-        "Actual Join Date",
-        "Year Of Service (Current DOJ)",
-        "Probation Status",
-        "Movement Type",
-        "Point of Hire",
-        "Source of Hire"
-    ]
-].copy()
+OT coverage:
+1895
 
+Leave coverage:
+938
 
-# Merge OT features
-burnout_data = master_features.merge(
-    ot_features,
-    on="EMP_CODE_STD",
-    how="left"
-)
-
-
-# Merge Leave features
-burnout_data = burnout_data.merge(
-    leave_features,
-    on="EMP_CODE_STD",
-    how="left"
-)
-
-
-# Employees without OT/Leave records = 0 activity
-ot_cols = [
-    "OT_Total_Hours",
-    "OT_Avg_Daily",
-    "OT_Max_Daily",
-    "OT_Days",
-    "OT_High_Days",
-    "OT_Chargeable",
-    "OT_Non_Chargeable"
-]
-
-leave_cols = [
-    "Leave_Total_Days",
-    "Leave_Applications",
-    "Leave_Avg_Days",
-    "Leave_Max_Days",
-    "Leave_Pending_Applications"
-]
-
-
-burnout_data[ot_cols] = burnout_data[ot_cols].fillna(0)
-burnout_data[leave_cols] = burnout_data[leave_cols].fillna(0)
-
-
-print("Burnout dataset shape:", burnout_data.shape)
-
-print("\nColumns:")
-print(burnout_data.columns.tolist())
-
-print("\nOT coverage:")
-print((burnout_data["OT_Total_Hours"] > 0).sum())
-
-print("\nLeave coverage:")
-print((burnout_data["Leave_Applications"] > 0).sum())
-
-print("\nBoth OT + Leave:")
-print(
-    (
-        (burnout_data["OT_Total_Hours"] > 0) &
-        (burnout_data["Leave_Applications"] > 0)
-    ).sum()
-)
+Both OT + Leave:
+204
