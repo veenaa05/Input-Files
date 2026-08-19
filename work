@@ -1,1 +1,27 @@
 
+# ============================================
+# CHECK ROW DUPLICATION AFTER MERGE
+# ============================================
+
+print("Rows:", len(burnout_data))
+print("Unique employee codes:", burnout_data["EMP_CODE_STD"].nunique())
+print(
+    "Duplicate employee-code rows:",
+    burnout_data["EMP_CODE_STD"].duplicated().sum()
+)
+
+duplicates_after_merge = burnout_data[
+    burnout_data["EMP_CODE_STD"].duplicated(keep=False)
+].sort_values("EMP_CODE_STD")
+
+print("\nDuplicated employees after merge:")
+print(
+    duplicates_after_merge[
+        [
+            "EMP_CODE_STD",
+            "Employee Name",
+            "OT_Total_Hours",
+            "Leave_Total_Days"
+        ]
+    ].to_string(index=False)
+)
