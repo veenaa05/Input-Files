@@ -18,6 +18,7 @@ print("\nDuplicated employees after merge:")
 print(
     duplicates_after_merge[
         [
+
             "EMP_CODE_STD",
             "Employee Name",
             "OT_Total_Hours",
