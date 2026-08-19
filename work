@@ -1,1 +1,37 @@
+# Check Employee Code availability and uniqueness
+print("Employee Master shape:", employee_master.shape)
 
+print("\nEmployee Code:")
+print("Unique:", employee_master["Employee Code"].nunique())
+print("Missing:", employee_master["Employee Code"].isna().sum())
+
+print("\nDuplicate Employee Codes:")
+print(employee_master["Employee Code"].duplicated().sum())
+
+print("\nSample Employee Codes:")
+print(employee_master["Employee Code"].head(10).tolist())
+
+
+
+
+
+for name, df in {
+    "Leave Application": leave_application,
+    "Monthly Leave Balance": monthly_leave_balance,
+    "OT Summary": overtime_summary,
+    "OT Daily": overtime_daily,
+}.items():
+
+    print(f"\n{name}")
+    print("Shape:", df.shape)
+    print("Columns:", df.columns.tolist())
+
+    # Find possible employee-code columns
+    possible_id_cols = [
+        c for c in df.columns
+        if "employee" in c.lower()
+        or "emp" in c.lower()
+        or "code" in c.lower()
+    ]
+
+    print("Possible employee ID columns:", possible_id_cols)
