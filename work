@@ -1,1 +1,66 @@
 
+# ============================================
+# STANDARDIZE EMPLOYEE CODES
+# ============================================
+
+def standardize_emp_code(series):
+    return (
+        series.astype("string")
+        .str.strip()
+        .str.replace("'", "", regex=False)   # remove leading apostrophe
+        .str.replace(".0", "", regex=False)  # remove Excel-style .0
+        .str.lstrip("0")                    # remove leading zeros
+        .replace("", pd.NA)
+    )
+
+
+# Create standardized employee codes
+employee_master_new["EMP_CODE_STD"] = standardize_emp_code(
+    employee_master_new["Employee Code"]
+)
+
+leave_application["EMP_CODE_STD"] = standardize_emp_code(
+    leave_application["Employee Code"]
+)
+
+monthly_leave_balance["EMP_CODE_STD"] = standardize_emp_code(
+    monthly_leave_balance["Employee Code"]
+)
+
+overtime_1["EMP_CODE_STD"] = standardize_emp_code(
+    overtime_1["EMP CODE"]
+)
+
+overtime_2["EMP_CODE_STD"] = standardize_emp_code(
+    overtime_2["EMP CODE"]
+)
+
+resignation["EMP_CODE_STD"] = standardize_emp_code(
+    resignation["Employee Code"]
+)
+
+
+# ============================================
+# CHECK MATCHING
+# ============================================
+
+master_set = set(
+    employee_master_new["EMP_CODE_STD"].dropna().unique()
+)
+
+for name, df in {
+    "Leave Application": leave_application,
+    "Monthly Leave Balance": monthly_leave_balance,
+    "OT Summary": overtime_1,
+    "OT Daily": overtime_2,
+    "Resignation": resignation
+}.items():
+
+    other_set = set(df["EMP_CODE_STD"].dropna().unique())
+
+    matched = len(master_set & other_set)
+
+    print(
+        f"{name}: {matched} employees matched "
+        f"({matched / len(master_set) * 100:.2f}%)"
+    )
