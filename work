@@ -1,62 +1,35 @@
 
-# ============================================
-# CHECK EMPLOYEE CODE FORMATS
-# ============================================
+======================================================================
+Employee Master
+dtype: str
+Sample values: ["'566137", "'534669", "'560618", "'48681", "'62969", "'62053", "'522934", "'550389", "'558924", "'541817"]
+Sample repr: ['"\'566137"', '"\'534669"', '"\'560618"', '"\'48681"', '"\'62969"', '"\'62053"', '"\'522934"', '"\'550389"', '"\'558924"', '"\'541817"']
+Lengths: {6: 1226, 7: 19257, 8: 1, 9: 2}
 
-code_columns = {
-    "Employee Master": employee_master_new["Employee Code"],
-    "Leave Application": leave_application["Employee Code"],
-    "Leave Balance": monthly_leave_balance["Employee Code"],
-    "OT Summary": overtime_1["EMP CODE"],
-    "OT Daily": overtime_2["EMP CODE"],
-}
+======================================================================
+Leave Application
+dtype: str
+Sample values: ['336880', '257107', '256943', '256943', '335123', '335056', '332684', '323326', '332684', '81417']
+Sample repr: ["'336880'", "'257107'", "'256943'", "'256943'", "'335123'", "'335056'", "'332684'", "'323326'", "'332684'", "'81417'"]
+Lengths: {5: 218, 6: 2336}
 
-for name, s in code_columns.items():
-    s = s.dropna().astype(str)
+======================================================================
+Leave Balance
+dtype: str
+Sample values: ['228992', '330201', '554584', '273218', '252192', '248829', '243093', '541209', '320643', '334899']
+Sample repr: ["'228992'", "'330201'", "'554584'", "'273218'", "'252192'", "'248829'", "'243093'", "'541209'", "'320643'", "'334899'"]
+Lengths: {5: 7, 6: 93}
 
-    print("\n" + "=" * 70)
-    print(name)
-    print("dtype:", s.dtype)
-    print("Sample values:", s.head(10).tolist())
-    print("Sample repr:", [repr(x) for x in s.head(10)])
-    print("Lengths:", s.str.len().value_counts().sort_index().to_dict())
+======================================================================
+OT Summary
+dtype: str
+Sample values: ['00026', '01009', '02044', '05213', '05568', '13622', '13971', '15126', '16867', '19544']
+Sample repr: ["'00026'", "'01009'", "'02044'", "'05213'", "'05568'", "'13622'", "'13971'", "'15126'", "'16867'", "'19544'"]
+Lengths: {5: 186, 6: 4353}
 
-
-
-
-# Check whether numeric conversion makes the codes match
-
-master_num = pd.to_numeric(
-    employee_master_new["Employee Code"],
-    errors="coerce"
-)
-
-for name, col in {
-    "Leave Application": "Employee Code",
-    "Leave Balance": "Employee Code",
-}.items():
-
-    if name == "Leave Application":
-        other_num = pd.to_numeric(
-            leave_application[col],
-            errors="coerce"
-        )
-    else:
-        other_num = pd.to_numeric(
-            monthly_leave_balance[col],
-            errors="coerce"
-        )
-
-    print(
-        name,
-        "numeric matches:",
-        master_num.isin(other_num).sum()
-    )
-
-
-ot_num = pd.to_numeric(overtime_1["EMP CODE"], errors="coerce")
-
-print(
-    "OT Summary numeric matches:",
-    master_num.isin(ot_num).sum()
-)
+======================================================================
+OT Daily
+dtype: str
+Sample values: ['00026', '01009', '02044', '05213', '05568', '13622', '13971', '15126', '16867', '19544']
+Sample repr: ["'00026'", "'01009'", "'02044'", "'05213'", "'05568'", "'13622'", "'13971'", "'15126'", "'16867'", "'19544'"]
+Lengths: {5: 186, 6: 4353}
