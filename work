@@ -1,35 +1,48 @@
-# ============================================
-# INSPECT LEAVE DATA
-# ============================================
+Leave Status values:
+Leave Status
+Approved by RM           1628
+Auto Approved             841
+Submitted                  37
+Pullbacked                 31
+Rejected by RM             10
+Auto Revoked                3
+Revoke Approved by RM       3
+NaN                         1
+Name: count, dtype: int64
 
-print("Leave Status values:")
-print(leave_application["Leave Status"].value_counts(dropna=False))
+Leave Type values:
+Leave Type
+PRIVILEGE LEAVE      2432
+WELLNESS LEAVE         85
+Celebration Leave      23
+OPTIONAL LEAVE         11
+MATERNITY LEAVE         2
+EDUCATIONAL LEAVE       1
+Name: count, dtype: int64
 
-print("\nLeave Type values:")
-print(leave_application["Leave Type"].value_counts(dropna=False))
+Actual Leave Days:
+count    2554.000000
+mean        1.561276
+std         4.164774
+min         0.500000
+25%         1.000000
+50%         1.000000
+75%         2.000000
+max       182.000000
+Name: Actual Leave Days, dtype: float64
 
-print("\nActual Leave Days:")
-print(
-    pd.to_numeric(
-        leave_application["Actual Leave Days"],
-        errors="coerce"
-    ).describe()
-)
+Total Days:
+count    2554.000000
+mean        1.561276
+std         4.164774
+min         0.500000
+25%         1.000000
+50%         1.000000
+75%         2.000000
+max       182.000000
+Name: Total Days, dtype: float64
 
-print("\nTotal Days:")
-print(
-    pd.to_numeric(
-        leave_application["Total Days"],
-        errors="coerce"
-    ).describe()
-)
+Unique employees with leave: 1079
 
-print("\nUnique employees with leave:",
-      leave_application["EMP_CODE_STD"].nunique())
-
-print("\nDuplicate Employee + Leave Application:")
-print(
-    leave_application[
-        ["EMP_CODE_STD", "Leave Application Id"]
-    ].duplicated().sum()
-)
+Duplicate Employee + Leave Application:
+0
