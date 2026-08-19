@@ -1,1 +1,35 @@
+# ============================================
+# INSPECT LEAVE DATA
+# ============================================
 
+print("Leave Status values:")
+print(leave_application["Leave Status"].value_counts(dropna=False))
+
+print("\nLeave Type values:")
+print(leave_application["Leave Type"].value_counts(dropna=False))
+
+print("\nActual Leave Days:")
+print(
+    pd.to_numeric(
+        leave_application["Actual Leave Days"],
+        errors="coerce"
+    ).describe()
+)
+
+print("\nTotal Days:")
+print(
+    pd.to_numeric(
+        leave_application["Total Days"],
+        errors="coerce"
+    ).describe()
+)
+
+print("\nUnique employees with leave:",
+      leave_application["EMP_CODE_STD"].nunique())
+
+print("\nDuplicate Employee + Leave Application:")
+print(
+    leave_application[
+        ["EMP_CODE_STD", "Leave Application Id"]
+    ].duplicated().sum()
+)
