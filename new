@@ -1,40 +1,39 @@
-# ============================================================
-# CHECK EXISTING BURNOUT SCORING RESULTS
-# ============================================================
+============================================================
+BURNOUT SCORING VARIABLES
+============================================================
 
-print("=" * 60)
-print("BURNOUT SCORING VARIABLES")
-print("=" * 60)
+X_reconstructed shape:
+(20468, 56)
 
-print("\nX_reconstructed shape:")
-print(X_reconstructed.shape)
+feature_errors shape:
+(20468, 56)
 
-print("\nfeature_errors shape:")
-print(feature_errors.shape)
+reconstruction_error shape:
+(20468,)
 
-print("\nreconstruction_error shape:")
-print(reconstruction_error.shape)
+total_error:
+1.8349977
 
-print("\ntotal_error:")
-print(total_error)
+employee_score:
+2065.028000856598
 
-print("\nemployee_score:")
-print(employee_score)
 
-print("\n\nburnout_scored shape:")
-print(burnout_scored.shape)
+burnout_scored shape:
+(20468, 27)
 
-print("\nburnout_scored columns:")
-print(burnout_scored.columns.tolist())
+burnout_scored columns:
+['EMP_CODE_STD', 'OT_Mean_Daily', 'OT_Max_Daily', 'OT_Total_Days', 'OT_High_Days', 'OT_Latest_Day', 'OT_Latest_Lag_1D', 'OT_Latest_Rolling_7D', 'OT_Latest_Rolling_14D', 'OT_Avg_Rolling_7D', 'OT_Avg_Rolling_14D', 'OT_Max_Rolling_7D', 'OT_Max_Rolling_14D', 'Leave_Total_Days', 'Leave_Applications', 'Leave_Avg_Days', 'Leave_Max_Days', 'Leave_Pending_Applications', 'Year Of Service (Current DOJ)', 'Department', 'Designation', 'Grade', 'Band', 'Employee Category', 'Branch', 'Burnout_Score', 'Burnout_Risk']
 
-print("\n\nemployee_errors shape:")
-print(employee_errors.shape)
 
-print("\nemployee_errors columns:")
-print(employee_errors.columns.tolist())
+employee_errors shape:
+(56, 3)
 
-print("\n\nemployee_business_errors shape:")
-print(employee_business_errors.shape)
+employee_errors columns:
+['Processed_Feature', 'Reconstruction_Error', 'Original_Feature']
 
-print("\nemployee_business_errors columns:")
-print(employee_business_errors.columns.tolist())
+
+employee_business_errors shape:
+(23, 2)
+
+employee_business_errors columns:
+['Original_Feature', 'Reconstruction_Error']
