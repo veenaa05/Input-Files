@@ -1,1 +1,118 @@
 
+# ============================================================
+# STEP 10: PREPARE AUTOENCODER INPUT
+# ============================================================
+
+from sklearn.compose import ColumnTransformer
+from sklearn.preprocessing import OneHotEncoder, StandardScaler
+from sklearn.impute import SimpleImputer
+from sklearn.pipeline import Pipeline
+
+# ------------------------------------------------------------
+# Numeric features
+# ------------------------------------------------------------
+
+numeric_cols = [
+    "OT_Mean_Daily",
+    "OT_Max_Daily",
+    "OT_Total_Days",
+    "OT_High_Days",
+    "OT_Latest_Day",
+    "OT_Latest_Lag_1D",
+    "OT_Latest_Rolling_7D",
+    "OT_Latest_Rolling_14D",
+    "OT_Avg_Rolling_7D",
+    "OT_Avg_Rolling_14D",
+    "OT_Max_Rolling_7D",
+    "OT_Max_Rolling_14D",
+    "Leave_Total_Days",
+    "Leave_Applications",
+    "Leave_Avg_Days",
+    "Leave_Max_Days",
+    "Leave_Pending_Applications",
+    "Year Of Service (Current DOJ)"
+]
+
+# ------------------------------------------------------------
+# Low-cardinality categorical features
+# ------------------------------------------------------------
+
+categorical_cols = [
+    "Department",
+    "Grade",
+    "Band",
+    "Employee Category",
+    "Branch"
+]
+
+print("Numeric features:", len(numeric_cols))
+print("Categorical features:", len(categorical_cols))
+
+
+# ------------------------------------------------------------
+# Preprocessing
+# ------------------------------------------------------------
+
+numeric_pipeline = Pipeline(
+    steps=[
+        (
+            "imputer",
+            SimpleImputer(strategy="median")
+        ),
+        (
+            "scaler",
+            StandardScaler()
+        )
+    ]
+)
+
+categorical_pipeline = Pipeline(
+    steps=[
+        (
+            "imputer",
+            SimpleImputer(strategy="most_frequent")
+        ),
+        (
+            "onehot",
+            OneHotEncoder(
+                handle_unknown="ignore",
+                sparse_output=False
+            )
+        )
+    ]
+)
+
+
+preprocessor = ColumnTransformer(
+    transformers=[
+        (
+            "numeric",
+            numeric_pipeline,
+            numeric_cols
+        ),
+        (
+            "categorical",
+            categorical_pipeline,
+            categorical_cols
+        )
+    ]
+)
+
+
+# ------------------------------------------------------------
+# Create feature matrix
+# ------------------------------------------------------------
+
+X_raw = burnout_model_data[
+    numeric_cols + categorical_cols
+].copy()
+
+X_processed = preprocessor.fit_transform(X_raw)
+
+print("\n========================================")
+print("AUTOENCODER INPUT")
+print("========================================")
+
+print("Original rows:", X_raw.shape[0])
+print("Processed shape:", X_processed.shape)
+print("Data type:", X_processed.dtype)
