@@ -1,1 +1,22 @@
+# ============================================================
+# STEP 7: MISSING VALUE CHECK
+# ============================================================
 
+missing_check = (
+    burnout_model_data[burnout_feature_cols]
+    .isna()
+    .sum()
+    .sort_values(ascending=False)
+)
+
+print("Missing values:")
+print(missing_check)
+
+print("\nPercentage missing:")
+print(
+    (
+        missing_check /
+        len(burnout_model_data) *
+        100
+    ).round(2)
+)
