@@ -1,1 +1,67 @@
+# ============================================================
+# STEP 4: CREATE EMPLOYEE-LEVEL OT TREND FEATURES
+# For Autoencoder Burnout Model
+# ============================================================
 
+# Aggregate daily OT behaviour to one row per employee
+
+ot_trend_features = (
+    ot_long
+    .groupby("EMP_CODE_STD")
+    .agg(
+        OT_Mean_Daily=("OT_Hours", "mean"),
+        OT_Max_Daily=("OT_Hours", "max"),
+        OT_Total_Days=("OT_Hours", lambda x: (x > 0).sum()),
+        OT_High_Days=("OT_Hours", lambda x: (x >= 4).sum()),
+
+        # Recent/latest workload indicators
+        OT_Latest_Day=("OT_Hours", "last"),
+        OT_Latest_Lag_1D=("OT_Lag_1_Day", "last"),
+        OT_Latest_Rolling_7D=("OT_Rolling_7D", "last"),
+        OT_Latest_Rolling_14D=("OT_Rolling_14D", "last"),
+
+        # Average historical rolling workload
+        OT_Avg_Rolling_7D=("OT_Rolling_7D", "mean"),
+        OT_Avg_Rolling_14D=("OT_Rolling_14D", "mean"),
+
+        # Maximum sustained workload
+        OT_Max_Rolling_7D=("OT_Rolling_7D", "max"),
+        OT_Max_Rolling_14D=("OT_Rolling_14D", "max")
+    )
+    .reset_index()
+)
+
+
+# ------------------------------------------------------------
+# CHECK
+# ------------------------------------------------------------
+
+print("=" * 60)
+print("EMPLOYEE-LEVEL OT TREND FEATURES")
+print("=" * 60)
+
+print("\nShape:")
+print(ot_trend_features.shape)
+
+print("\nColumns:")
+print(ot_trend_features.columns.tolist())
+
+print("\nUnique employees:")
+print(
+    ot_trend_features["EMP_CODE_STD"].nunique()
+)
+
+print("\nDuplicate employee codes:")
+print(
+    ot_trend_features["EMP_CODE_STD"].duplicated().sum()
+)
+
+print("\nSample:")
+print(
+    ot_trend_features.head()
+)
+
+print("\nSummary:")
+print(
+    ot_trend_features.describe()
+)
