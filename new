@@ -1,1 +1,15 @@
+# ============================================================
+# CHECK CURRENT BURNOUT VARIABLES
+# ============================================================
 
+print("Variables related to burnout/scoring:\n")
+
+for name in sorted(globals()):
+    if any(x in name.lower() for x in [
+        "burnout",
+        "reconstruct",
+        "score",
+        "error"
+    ]):
+        obj = globals()[name]
+        print(f"{name:<35} {type(obj).__name__}")
