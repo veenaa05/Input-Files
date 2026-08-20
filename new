@@ -1,1 +1,22 @@
+# ============================================================
+# STEP 9: CHECK CATEGORICAL FEATURES
+# ============================================================
 
+categorical_cols = [
+    "Department",
+    "Designation",
+    "Grade",
+    "Band",
+    "Employee Category",
+    "Branch"
+]
+
+for col in categorical_cols:
+    print("\n" + "=" * 50)
+    print(col)
+    print("Unique values:", burnout_model_data[col].nunique())
+    print(
+        burnout_model_data[col]
+        .value_counts(dropna=False)
+        .head(10)
+    )
