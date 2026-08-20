@@ -1,64 +1,34 @@
-# ============================================================
-# STEP 12: CALCULATE AUTOENCODER RECONSTRUCTION ERROR
-# ============================================================
+============================================================
+RECONSTRUCTION
+============================================================
+Original shape:       (20468, 56)
+Reconstructed shape:  (20468, 56)
 
-# Reconstruct the input data
-X_reconstructed = autoencoder.predict(
-    X,
-    verbose=0
-)
+Reconstruction error calculated.
+Number of employees: 20468
 
-print("=" * 60)
-print("RECONSTRUCTION")
-print("=" * 60)
+============================================================
+BURNOUT SCORE SUMMARY
+============================================================
+count    20468.000000
+mean         0.032768
+std          0.313468
+min          0.001370
+25%          0.006391
+50%          0.015190
+75%          0.018786
+max         36.875500
+Name: Burnout_Score, dtype: float64
 
-print("Original shape:      ", X.shape)
-print("Reconstructed shape: ", X_reconstructed.shape)
-
-
-# ------------------------------------------------------------
-# RECONSTRUCTION ERROR FOR EACH EMPLOYEE
-# ------------------------------------------------------------
-
-reconstruction_error = np.mean(
-    np.square(X - X_reconstructed),
-    axis=1
-)
-
-print("\nReconstruction error calculated.")
-print("Number of employees:", len(reconstruction_error))
-
-
-# ------------------------------------------------------------
-# ADD SCORE TO BURNOUT DATASET
-# ------------------------------------------------------------
-
-burnout_scored = burnout_model_data.copy()
-
-burnout_scored["Burnout_Score"] = reconstruction_error
-
-
-# ------------------------------------------------------------
-# BASIC SCORE CHECK
-# ------------------------------------------------------------
-
-print("\n" + "=" * 60)
-print("BURNOUT SCORE SUMMARY")
-print("=" * 60)
-
-print(
-    burnout_scored["Burnout_Score"].describe()
-)
-
-print("\nTop 10 highest burnout scores:")
-
-print(
-    burnout_scored[
-        ["EMP_CODE_STD", "Burnout_Score"]
-    ]
-    .sort_values(
-        "Burnout_Score",
-        ascending=False
-    )
-    .head(10)
-)
+Top 10 highest burnout scores:
+      EMP_CODE_STD  Burnout_Score
+193         331498      36.875500
+7573        559161      22.080801
+19736        64332       4.954079
+44           21332       1.958860
+9183        566801       1.862056
+8963        566089       1.800869
+2997        534128       1.688301
+77           24436       1.663479
+8964        566090       1.641433
+6321        552837       1.540877
