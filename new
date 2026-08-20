@@ -1,1 +1,90 @@
 
+# ============================================================
+# STEP 15: BUSINESS-LEVEL BURNOUT FEATURE IMPORTANCE
+# ============================================================
+
+importance_df = global_importance.copy()
+
+# Original categorical features used in the burnout model
+categorical_cols = [
+    "Department",
+    "Designation",
+    "Grade",
+    "Band",
+    "Employee Category",
+    "Branch"
+]
+
+
+def get_original_feature(processed_name):
+
+    # Numeric features
+    if processed_name.startswith("numeric__"):
+        return processed_name.replace("numeric__", "", 1)
+
+    # One-hot encoded categorical features
+    if processed_name.startswith("categorical__"):
+
+        name = processed_name.replace("categorical__", "", 1)
+
+        # Find which original categorical column it belongs to
+        for col in categorical_cols:
+            if name == col or name.startswith(col + "_"):
+                return col
+
+        return name
+
+    return processed_name
+
+
+# Map processed features back to original business features
+importance_df["Original_Feature"] = (
+    importance_df["Processed_Feature"]
+    .apply(get_original_feature)
+)
+
+
+# Aggregate reconstruction error
+business_importance = (
+    importance_df
+    .groupby("Original_Feature", as_index=False)
+    ["Mean_Reconstruction_Error"]
+    .sum()
+    .sort_values(
+        "Mean_Reconstruction_Error",
+        ascending=False
+    )
+    .reset_index(drop=True)
+)
+
+
+# Calculate percentage contribution
+total_error = business_importance[
+    "Mean_Reconstruction_Error"
+].sum()
+
+business_importance["Importance_%"] = (
+    business_importance["Mean_Reconstruction_Error"]
+    / total_error
+    * 100
+)
+
+
+print("=" * 65)
+print("BUSINESS-LEVEL BURNOUT FEATURE IMPORTANCE")
+print("=" * 65)
+
+print(
+    business_importance.to_string(index=False)
+)
+
+
+print("\n" + "=" * 65)
+print("TOP 10 BURNOUT DRIVERS")
+print("=" * 65)
+
+print(
+    business_importance
+    .head(10)
+    .to_string(index=False)
+)
