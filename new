@@ -1,165 +1,57 @@
+Number of OT daily columns: 30
+First 5: ['01-JUN-26_TOT', '02-JUN-26_TOT', '03-JUN-26_TOT', '04-JUN-26_TOT', '05-JUN-26_TOT']
+Last 5: ['26-JUN-26_TOT', '27-JUN-26_TOT', '28-JUN-26_TOT', '29-JUN-26_TOT', '30-JUN-26_TOT']
 
-# ============================================================
-# REBUILD OT LONG DATA + TREND FEATURES
-# ============================================================
+OT rows before removing duplicates: 4539
+Unique employees before: 4535
+OT rows after removing duplicates: 4535
+Unique employees after: 4535
 
-import pandas as pd
-import numpy as np
+============================================================
+OT LONG DATA
+============================================================
+Shape: (136050, 7)
 
-# ------------------------------------------------------------
-# STEP 1: Identify daily OT total columns
-# ------------------------------------------------------------
+Columns:
+['EMP_CODE_STD', 'Date_Column', 'OT_Hours', 'Date', 'OT_Lag_1_Day', 'OT_Rolling_7D', 'OT_Rolling_14D']
 
-ot_total_cols = [
-    col for col in overtime_2.columns
-    if col.endswith("_TOT") and "-" in col
-]
+Sample:
+   EMP_CODE_STD       Date  OT_Hours  OT_Lag_1_Day  OT_Rolling_7D  \
+0          1009 2026-06-01       0.0           0.0       0.000000   
+1          1009 2026-06-02       4.0           0.0       0.000000   
+2          1009 2026-06-03       0.0           4.0       2.000000   
+3          1009 2026-06-04       2.0           0.0       1.333333   
+4          1009 2026-06-05       0.0           2.0       1.500000   
+5          1009 2026-06-06       0.0           0.0       1.200000   
+6          1009 2026-06-07       0.0           0.0       1.000000   
+7          1009 2026-06-08       0.0           0.0       0.857143   
+8          1009 2026-06-09       0.0           0.0       0.857143   
+9          1009 2026-06-10       0.0           0.0       0.285714   
+10         1009 2026-06-11       0.0           0.0       0.285714   
+11         1009 2026-06-12       0.0           0.0       0.000000   
+12         1009 2026-06-13       0.0           0.0       0.000000   
+13         1009 2026-06-14       0.0           0.0       0.000000   
+14         1009 2026-06-15       0.0           0.0       0.000000   
 
-print("Number of OT daily columns:", len(ot_total_cols))
-print("First 5:", ot_total_cols[:5])
-print("Last 5:", ot_total_cols[-5:])
+    OT_Rolling_14D  
+0         0.000000  
+1         0.000000  
+2         2.000000  
+3         1.333333  
+4         1.500000  
+5         1.200000  
+6         1.000000  
+7         0.857143  
+8         0.750000  
+9         0.666667  
+10        0.600000  
+11        0.545455  
+12        0.500000  
+13        0.461538  
+14        0.428571  
 
+Unique employees:
+4535
 
-# ------------------------------------------------------------
-# STEP 2: Keep only one row per employee
-# ------------------------------------------------------------
-
-ot_source = overtime_2[
-    ["EMP_CODE_STD"] + ot_total_cols
-].copy()
-
-print("\nOT rows before removing duplicates:", len(ot_source))
-print(
-    "Unique employees before:",
-    ot_source["EMP_CODE_STD"].nunique()
-)
-
-# Your earlier data showed 4 duplicate employee rows
-ot_source = ot_source.drop_duplicates(
-    subset=["EMP_CODE_STD"],
-    keep="first"
-).copy()
-
-print(
-    "OT rows after removing duplicates:",
-    len(ot_source)
-)
-print(
-    "Unique employees after:",
-    ot_source["EMP_CODE_STD"].nunique()
-)
-
-
-# ------------------------------------------------------------
-# STEP 3: Convert wide OT data to long format
-# ------------------------------------------------------------
-
-ot_long = ot_source.melt(
-    id_vars=["EMP_CODE_STD"],
-    value_vars=ot_total_cols,
-    var_name="Date_Column",
-    value_name="OT_Hours"
-)
-
-# Extract date from column name
-# Example: 01-JUN-26_TOT -> 01-JUN-26
-ot_long["Date"] = pd.to_datetime(
-    ot_long["Date_Column"].str.replace("_TOT", "", regex=False),
-    format="%d-%b-%y",
-    errors="coerce"
-)
-
-# Convert OT hours to numeric
-ot_long["OT_Hours"] = pd.to_numeric(
-    ot_long["OT_Hours"],
-    errors="coerce"
-).fillna(0)
-
-# Sort properly before calculating lag/rolling features
-ot_long = ot_long.sort_values(
-    ["EMP_CODE_STD", "Date"]
-).reset_index(drop=True)
-
-
-# ------------------------------------------------------------
-# STEP 4: Previous day's OT
-# ------------------------------------------------------------
-
-ot_long["OT_Lag_1_Day"] = (
-    ot_long
-    .groupby("EMP_CODE_STD")["OT_Hours"]
-    .shift(1)
-    .fillna(0)
-)
-
-
-# ------------------------------------------------------------
-# STEP 5: Previous 7-day average
-# ------------------------------------------------------------
-
-ot_long["OT_Rolling_7D"] = (
-    ot_long
-    .groupby("EMP_CODE_STD")["OT_Hours"]
-    .transform(
-        lambda x:
-        x.shift(1)
-         .rolling(window=7, min_periods=1)
-         .mean()
-    )
-    .fillna(0)
-)
-
-
-# ------------------------------------------------------------
-# STEP 6: Previous 14-day average
-# ------------------------------------------------------------
-
-ot_long["OT_Rolling_14D"] = (
-    ot_long
-    .groupby("EMP_CODE_STD")["OT_Hours"]
-    .transform(
-        lambda x:
-        x.shift(1)
-         .rolling(window=14, min_periods=1)
-         .mean()
-    )
-    .fillna(0)
-)
-
-
-# ------------------------------------------------------------
-# STEP 7: Final check
-# ------------------------------------------------------------
-
-print("\n" + "=" * 60)
-print("OT LONG DATA")
-print("=" * 60)
-
-print("Shape:", ot_long.shape)
-
-print("\nColumns:")
-print(ot_long.columns.tolist())
-
-print("\nSample:")
-print(
-    ot_long[
-        [
-            "EMP_CODE_STD",
-            "Date",
-            "OT_Hours",
-            "OT_Lag_1_Day",
-            "OT_Rolling_7D",
-            "OT_Rolling_14D"
-        ]
-    ].head(15)
-)
-
-print("\nUnique employees:")
-print(ot_long["EMP_CODE_STD"].nunique())
-
-print("\nDuplicate employee-date combinations:")
-print(
-    ot_long.duplicated(
-        ["EMP_CODE_STD", "Date"]
-    ).sum()
-)
+Duplicate employee-date combinations:
+0
