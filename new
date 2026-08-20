@@ -1,1 +1,40 @@
+# ============================================================
+# CHECK EXISTING BURNOUT SCORING RESULTS
+# ============================================================
 
+print("=" * 60)
+print("BURNOUT SCORING VARIABLES")
+print("=" * 60)
+
+print("\nX_reconstructed shape:")
+print(X_reconstructed.shape)
+
+print("\nfeature_errors shape:")
+print(feature_errors.shape)
+
+print("\nreconstruction_error shape:")
+print(reconstruction_error.shape)
+
+print("\ntotal_error:")
+print(total_error)
+
+print("\nemployee_score:")
+print(employee_score)
+
+print("\n\nburnout_scored shape:")
+print(burnout_scored.shape)
+
+print("\nburnout_scored columns:")
+print(burnout_scored.columns.tolist())
+
+print("\n\nemployee_errors shape:")
+print(employee_errors.shape)
+
+print("\nemployee_errors columns:")
+print(employee_errors.columns.tolist())
+
+print("\n\nemployee_business_errors shape:")
+print(employee_business_errors.shape)
+
+print("\nemployee_business_errors columns:")
+print(employee_business_errors.columns.tolist())
