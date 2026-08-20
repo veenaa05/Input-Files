@@ -1,1 +1,81 @@
+# ============================================================
+# STEP 3: CALCULATE LAG + ROLLING OT FEATURES
+# ============================================================
 
+# Make sure data is sorted
+ot_long = ot_long.sort_values(
+    ["EMP_CODE_STD", "Date"]
+).copy()
+
+# ------------------------------------------------------------
+# Previous day's OT
+# ------------------------------------------------------------
+
+ot_long["OT_Lag_1_Day"] = (
+    ot_long
+    .groupby("EMP_CODE_STD")["OT_Hours"]
+    .shift(1)
+)
+
+# ------------------------------------------------------------
+# Previous 7-day rolling average
+# ------------------------------------------------------------
+
+ot_long["OT_Rolling_7D"] = (
+    ot_long
+    .groupby("EMP_CODE_STD")["OT_Hours"]
+    .transform(
+        lambda x:
+        x.shift(1)
+         .rolling(window=7, min_periods=1)
+         .mean()
+    )
+)
+
+# ------------------------------------------------------------
+# Previous 14-day rolling average
+# ------------------------------------------------------------
+
+ot_long["OT_Rolling_14D"] = (
+    ot_long
+    .groupby("EMP_CODE_STD")["OT_Hours"]
+    .transform(
+        lambda x:
+        x.shift(1)
+         .rolling(window=14, min_periods=1)
+         .mean()
+    )
+)
+
+# First day has no previous-day value
+ot_long[
+    [
+        "OT_Lag_1_Day",
+        "OT_Rolling_7D",
+        "OT_Rolling_14D"
+    ]
+] = ot_long[
+    [
+        "OT_Lag_1_Day",
+        "OT_Rolling_7D",
+        "OT_Rolling_14D"
+    ]
+].fillna(0)
+
+print("OT trend features created successfully.")
+
+print(
+    ot_long[
+        [
+            "EMP_CODE_STD",
+            "Date",
+            "OT_Hours",
+            "OT_Lag_1_Day",
+            "OT_Rolling_7D",
+            "OT_Rolling_14D"
+        ]
+    ].head(15)
+)
+
+print("\nColumns:")
+print(ot_long.columns.tolist())
