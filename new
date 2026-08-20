@@ -1,1 +1,64 @@
+# ============================================================
+# STEP 12: CALCULATE AUTOENCODER RECONSTRUCTION ERROR
+# ============================================================
 
+# Reconstruct the input data
+X_reconstructed = autoencoder.predict(
+    X,
+    verbose=0
+)
+
+print("=" * 60)
+print("RECONSTRUCTION")
+print("=" * 60)
+
+print("Original shape:      ", X.shape)
+print("Reconstructed shape: ", X_reconstructed.shape)
+
+
+# ------------------------------------------------------------
+# RECONSTRUCTION ERROR FOR EACH EMPLOYEE
+# ------------------------------------------------------------
+
+reconstruction_error = np.mean(
+    np.square(X - X_reconstructed),
+    axis=1
+)
+
+print("\nReconstruction error calculated.")
+print("Number of employees:", len(reconstruction_error))
+
+
+# ------------------------------------------------------------
+# ADD SCORE TO BURNOUT DATASET
+# ------------------------------------------------------------
+
+burnout_scored = burnout_model_data.copy()
+
+burnout_scored["Burnout_Score"] = reconstruction_error
+
+
+# ------------------------------------------------------------
+# BASIC SCORE CHECK
+# ------------------------------------------------------------
+
+print("\n" + "=" * 60)
+print("BURNOUT SCORE SUMMARY")
+print("=" * 60)
+
+print(
+    burnout_scored["Burnout_Score"].describe()
+)
+
+print("\nTop 10 highest burnout scores:")
+
+print(
+    burnout_scored[
+        ["EMP_CODE_STD", "Burnout_Score"]
+    ]
+    .sort_values(
+        "Burnout_Score",
+        ascending=False
+    )
+    .head(10)
+)
