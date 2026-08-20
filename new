@@ -1,90 +1,42 @@
+=================================================================
+BUSINESS-LEVEL BURNOUT FEATURE IMPORTANCE
+=================================================================
+             Original_Feature  Mean_Reconstruction_Error  Importance_%
+                       Branch                   0.629935     34.328941
+                OT_Total_Days                   0.120992      6.593597
+               Leave_Avg_Days                   0.113645      6.193218
+Year Of Service (Current DOJ)                   0.100581      5.481260
+                 OT_High_Days                   0.092136      5.021021
+         OT_Latest_Rolling_7D                   0.075750      4.128097
+                 OT_Max_Daily                   0.068653      3.741291
+               Leave_Max_Days                   0.066425      3.619892
+        OT_Latest_Rolling_14D                   0.065059      3.545433
+                         Band                   0.059222      3.227383
+           Leave_Applications                   0.057997      3.160627
+            Employee Category                   0.055645      3.032404
+                        Grade                   0.046785      2.549583
+             Leave_Total_Days                   0.041001      2.234370
+           OT_Max_Rolling_14D                   0.037195      2.026992
+                OT_Latest_Day                   0.035171      1.916700
+             OT_Latest_Lag_1D                   0.030952      1.686774
+                   Department                   0.030008      1.635338
+            OT_Max_Rolling_7D                   0.029530      1.609267
+           OT_Avg_Rolling_14D                   0.026689      1.454469
+                OT_Mean_Daily                   0.021074      1.148431
+            OT_Avg_Rolling_7D                   0.020438      1.113786
+   Leave_Pending_Applications                   0.010113      0.551132
 
-# ============================================================
-# STEP 15: BUSINESS-LEVEL BURNOUT FEATURE IMPORTANCE
-# ============================================================
-
-importance_df = global_importance.copy()
-
-# Original categorical features used in the burnout model
-categorical_cols = [
-    "Department",
-    "Designation",
-    "Grade",
-    "Band",
-    "Employee Category",
-    "Branch"
-]
-
-
-def get_original_feature(processed_name):
-
-    # Numeric features
-    if processed_name.startswith("numeric__"):
-        return processed_name.replace("numeric__", "", 1)
-
-    # One-hot encoded categorical features
-    if processed_name.startswith("categorical__"):
-
-        name = processed_name.replace("categorical__", "", 1)
-
-        # Find which original categorical column it belongs to
-        for col in categorical_cols:
-            if name == col or name.startswith(col + "_"):
-                return col
-
-        return name
-
-    return processed_name
-
-
-# Map processed features back to original business features
-importance_df["Original_Feature"] = (
-    importance_df["Processed_Feature"]
-    .apply(get_original_feature)
-)
-
-
-# Aggregate reconstruction error
-business_importance = (
-    importance_df
-    .groupby("Original_Feature", as_index=False)
-    ["Mean_Reconstruction_Error"]
-    .sum()
-    .sort_values(
-        "Mean_Reconstruction_Error",
-        ascending=False
-    )
-    .reset_index(drop=True)
-)
-
-
-# Calculate percentage contribution
-total_error = business_importance[
-    "Mean_Reconstruction_Error"
-].sum()
-
-business_importance["Importance_%"] = (
-    business_importance["Mean_Reconstruction_Error"]
-    / total_error
-    * 100
-)
-
-
-print("=" * 65)
-print("BUSINESS-LEVEL BURNOUT FEATURE IMPORTANCE")
-print("=" * 65)
-
-print(
-    business_importance.to_string(index=False)
-)
-
-
-print("\n" + "=" * 65)
-print("TOP 10 BURNOUT DRIVERS")
-print("=" * 65)
-
-print(
-    business_importance
-    .head(10)
-    .to_string(index=False)
-)
+=================================================================
+TOP 10 BURNOUT DRIVERS
+=================================================================
+             Original_Feature  Mean_Reconstruction_Error  Importance_%
+                       Branch                   0.629935     34.328941
+                OT_Total_Days                   0.120992      6.593597
+               Leave_Avg_Days                   0.113645      6.193218
+Year Of Service (Current DOJ)                   0.100581      5.481260
+                 OT_High_Days                   0.092136      5.021021
+         OT_Latest_Rolling_7D                   0.075750      4.128097
+                 OT_Max_Daily                   0.068653      3.741291
+               Leave_Max_Days                   0.066425      3.619892
+        OT_Latest_Rolling_14D                   0.065059      3.545433
+                         Band                   0.059222      3.227383
