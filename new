@@ -1,22 +1,124 @@
-# ============================================================
-# STEP 9: CHECK CATEGORICAL FEATURES
-# ============================================================
+Original features: 25
+Clean features: 24
 
-categorical_cols = [
-    "Department",
-    "Designation",
-    "Grade",
-    "Band",
-    "Employee Category",
-    "Branch"
-]
+Removed:
+Sub Department
 
-for col in categorical_cols:
-    print("\n" + "=" * 50)
-    print(col)
-    print("Unique values:", burnout_model_data[col].nunique())
-    print(
-        burnout_model_data[col]
-        .value_counts(dropna=False)
-        .head(10)
-    )
+Final shape:
+(20468, 25)
+
+Missing values:
+OT_Mean_Daily                    0
+OT_Max_Daily                     0
+OT_Total_Days                    0
+OT_High_Days                     0
+OT_Latest_Day                    0
+OT_Latest_Lag_1D                 0
+OT_Latest_Rolling_7D             0
+OT_Latest_Rolling_14D            0
+OT_Avg_Rolling_7D                0
+OT_Avg_Rolling_14D               0
+OT_Max_Rolling_7D                0
+OT_Max_Rolling_14D               0
+Leave_Total_Days                 0
+Leave_Applications               0
+Leave_Avg_Days                   0
+Leave_Max_Days                   0
+Leave_Pending_Applications       0
+Year Of Service (Current DOJ)    0
+Department                       0
+Designation                      0
+Grade                            0
+Band                             0
+Employee Category                0
+Branch                           0
+dtype: int64
+
+
+
+
+
+
+
+
+
+
+
+==================================================
+Department
+Unique values: 11
+Department
+Operations                20161
+Pestocides                  124
+Human Resources              92
+Finance & Accounts           40
+Business Development         15
+Administration               11
+Purchase                      9
+Director'S Office             7
+Technical                     4
+Information Technology        4
+Name: count, dtype: int64
+
+==================================================
+Designation
+Unique values: 378
+Designation
+Housekeeper                 8284
+Chambermaid                 2122
+Housekeeping Staff           844
+Pantry Attendant             674
+Housekeeping Supervisor      581
+Office Assistant             513
+Electrician                  508
+Multi Skilled Technician     502
+Janitor                      434
+General Duty Assistant       341
+Name: count, dtype: int64
+
+==================================================
+Grade
+Unique values: 14
+Grade
+Contract    19971
+S3            155
+S2            137
+S4             59
+S1             57
+SS1            19
+S5             18
+S6             16
+M4             10
+M3             10
+Name: count, dtype: int64
+
+==================================================
+Band
+Unique values: 2
+Band
+Blue Collar     11053
+White Collar     9415
+Name: count, dtype: int64
+
+==================================================
+Employee Category
+Unique values: 2
+Employee Category
+Permanent    13883
+Contract      6585
+Name: count, dtype: int64
+
+==================================================
+Branch
+Unique values: 9
+Branch
+Mumbai Vikroli             4956
+ODISHA                     2652
+ROM Rest Of Maharashtra    2613
+NOIDA                      2472
+Mumbai HO Andheri          2424
+CHENNAI                    1561
+BANGALORE                  1500
+AHMEDABAD                  1155
+HYDERABAD                  1135
+Name: count, dtype: int64
