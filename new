@@ -1,1 +1,97 @@
 
+# ============================================================
+# STEP 13: BURNOUT RISK CATEGORIES
+# ============================================================
+
+# Calculate percentile-based thresholds
+low_medium_threshold = burnout_scored["Burnout_Score"].quantile(0.75)
+medium_high_threshold = burnout_scored["Burnout_Score"].quantile(0.95)
+
+print("=" * 60)
+print("BURNOUT RISK THRESHOLDS")
+print("=" * 60)
+
+print(
+    f"Low / Medium threshold (P75): "
+    f"{low_medium_threshold:.6f}"
+)
+
+print(
+    f"Medium / High threshold (P95): "
+    f"{medium_high_threshold:.6f}"
+)
+
+
+# ------------------------------------------------------------
+# ASSIGN RISK CATEGORY
+# ------------------------------------------------------------
+
+def assign_burnout_risk(score):
+
+    if score <= low_medium_threshold:
+        return "Low"
+
+    elif score <= medium_high_threshold:
+        return "Medium"
+
+    else:
+        return "High"
+
+
+burnout_scored["Burnout_Risk"] = (
+    burnout_scored["Burnout_Score"]
+    .apply(assign_burnout_risk)
+)
+
+
+# ------------------------------------------------------------
+# RISK DISTRIBUTION
+# ------------------------------------------------------------
+
+print("\n" + "=" * 60)
+print("BURNOUT RISK DISTRIBUTION")
+print("=" * 60)
+
+risk_counts = (
+    burnout_scored["Burnout_Risk"]
+    .value_counts()
+    .reindex(["Low", "Medium", "High"])
+)
+
+risk_percent = (
+    burnout_scored["Burnout_Risk"]
+    .value_counts(normalize=True)
+    .reindex(["Low", "Medium", "High"])
+    * 100
+)
+
+risk_summary = pd.DataFrame({
+    "Employees": risk_counts,
+    "Percentage": risk_percent.round(2)
+})
+
+print(risk_summary)
+
+
+# ------------------------------------------------------------
+# FINAL CHECK
+# ------------------------------------------------------------
+
+print("\n" + "=" * 60)
+print("BURNOUT SCORING COMPLETE")
+print("=" * 60)
+
+print(
+    burnout_scored[
+        [
+            "EMP_CODE_STD",
+            "Burnout_Score",
+            "Burnout_Risk"
+        ]
+    ]
+    .sort_values(
+        "Burnout_Score",
+        ascending=False
+    )
+    .head(20)
+)
