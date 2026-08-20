@@ -1,1 +1,30 @@
 
+# ============================================================
+# STEP 8: CLEAN BURNOUT MODEL FEATURES
+# ============================================================
+
+# Drop Sub Department because 99.06% is missing
+burnout_feature_cols_clean = [
+    col for col in burnout_feature_cols
+    if col != "Sub Department"
+]
+
+burnout_model_data = burnout_data[
+    ["EMP_CODE_STD"] + burnout_feature_cols_clean
+].copy()
+
+print("Original features:", len(burnout_feature_cols))
+print("Clean features:", len(burnout_feature_cols_clean))
+
+print("\nRemoved:")
+print("Sub Department")
+
+print("\nFinal shape:")
+print(burnout_model_data.shape)
+
+print("\nMissing values:")
+print(
+    burnout_model_data[
+        burnout_feature_cols_clean
+    ].isna().sum()
+)
