@@ -1,22 +1,33 @@
-# ============================================================
-# STEP 7: MISSING VALUE CHECK
-# ============================================================
+=================================================================
+BURNOUT MODEL DATASET
+=================================================================
+Shape: (20468, 26)
+Unique employees: 20468
+Duplicate employees: 0
 
-missing_check = (
-    burnout_model_data[burnout_feature_cols]
-    .isna()
-    .sum()
-    .sort_values(ascending=False)
-)
-
-print("Missing values:")
-print(missing_check)
-
-print("\nPercentage missing:")
-print(
-    (
-        missing_check /
-        len(burnout_model_data) *
-        100
-    ).round(2)
-)
+Features:
+1. OT_Mean_Daily
+2. OT_Max_Daily
+3. OT_Total_Days
+4. OT_High_Days
+5. OT_Latest_Day
+6. OT_Latest_Lag_1D
+7. OT_Latest_Rolling_7D
+8. OT_Latest_Rolling_14D
+9. OT_Avg_Rolling_7D
+10. OT_Avg_Rolling_14D
+11. OT_Max_Rolling_7D
+12. OT_Max_Rolling_14D
+13. Leave_Total_Days
+14. Leave_Applications
+15. Leave_Avg_Days
+16. Leave_Max_Days
+17. Leave_Pending_Applications
+18. Year Of Service (Current DOJ)
+19. Department
+20. Sub Department
+21. Designation
+22. Grade
+23. Band
+24. Employee Category
+25. Branch
