@@ -1,139 +1,35 @@
-# ============================================================
-# STEP 5: BUILD FINAL EMPLOYEE-LEVEL BURNOUT DATASET
-# ============================================================
+Employee master:
+(20468, 93)
 
-# ------------------------------------------------------------
-# 1. Start with clean employee master
-# ------------------------------------------------------------
+Unique employee codes:
+20468
+Duplicate employee codes: 0
 
-burnout_data = master_clean.copy()
+After OT trend merge:
+(20468, 105)
+Duplicate employee codes: 0
 
-print("Employee master:")
-print(burnout_data.shape)
+After Leave merge:
+(20468, 110)
+Duplicate employee codes: 0
 
+=================================================================
+FINAL BURNOUT DATASET CHECK
+=================================================================
+Rows: 20468
+Unique employees: 20468
+Duplicate employee codes: 0
+Columns: 110
 
-# ------------------------------------------------------------
-# 2. Check keys
-# ------------------------------------------------------------
+OT columns:
+['OT_Mean_Daily', 'OT_Max_Daily', 'OT_Total_Days', 'OT_High_Days', 'OT_Latest_Day', 'OT_Latest_Lag_1D', 'OT_Latest_Rolling_7D', 'OT_Latest_Rolling_14D', 'OT_Avg_Rolling_7D', 'OT_Avg_Rolling_14D', 'OT_Max_Rolling_7D', 'OT_Max_Rolling_14D']
 
-print("\nUnique employee codes:")
-print(burnout_data["EMP_CODE_STD"].nunique())
+Leave columns:
+['Leave_Total_Days', 'Leave_Applications', 'Leave_Avg_Days', 'Leave_Max_Days', 'Leave_Pending_Applications']
 
-print(
-    "Duplicate employee codes:",
-    burnout_data["EMP_CODE_STD"].duplicated().sum()
-)
-
-
-# ------------------------------------------------------------
-# 3. Merge OT trend features
-# ------------------------------------------------------------
-
-burnout_data = burnout_data.merge(
-    ot_trend_features,
-    on="EMP_CODE_STD",
-    how="left",
-    validate="one_to_one"
-)
-
-print("\nAfter OT trend merge:")
-print(burnout_data.shape)
-
-print(
-    "Duplicate employee codes:",
-    burnout_data["EMP_CODE_STD"].duplicated().sum()
-)
-
-
-# ------------------------------------------------------------
-# 4. Merge Leave features
-# ------------------------------------------------------------
-
-burnout_data = burnout_data.merge(
-    leave_features,
-    on="EMP_CODE_STD",
-    how="left",
-    validate="one_to_one"
-)
-
-print("\nAfter Leave merge:")
-print(burnout_data.shape)
-
-print(
-    "Duplicate employee codes:",
-    burnout_data["EMP_CODE_STD"].duplicated().sum()
-)
-
-
-# ------------------------------------------------------------
-# 5. Fill missing OT/Leave values
-# ------------------------------------------------------------
-
-ot_cols = [
-    col for col in burnout_data.columns
-    if col.startswith("OT_")
-]
-
-leave_cols = [
-    col for col in burnout_data.columns
-    if col.startswith("Leave_")
-]
-
-burnout_data[ot_cols] = burnout_data[ot_cols].fillna(0)
-burnout_data[leave_cols] = burnout_data[leave_cols].fillna(0)
-
-
-# ------------------------------------------------------------
-# 6. Final validation
-# ------------------------------------------------------------
-
-print("\n" + "=" * 65)
-print("FINAL BURNOUT DATASET CHECK")
-print("=" * 65)
-
-print("Rows:", len(burnout_data))
-print(
-    "Unique employees:",
-    burnout_data["EMP_CODE_STD"].nunique()
-)
-
-print(
-    "Duplicate employee codes:",
-    burnout_data["EMP_CODE_STD"].duplicated().sum()
-)
-
-print("Columns:", burnout_data.shape[1])
-
-print("\nOT columns:")
-print(ot_cols)
-
-print("\nLeave columns:")
-print(leave_cols)
-
-
-# ------------------------------------------------------------
-# 7. Coverage
-# ------------------------------------------------------------
-
-ot_coverage = (
-    burnout_data[ot_cols]
-    .sum(axis=1) > 0
-).sum()
-
-leave_coverage = (
-    burnout_data[leave_cols]
-    .sum(axis=1) > 0
-).sum()
-
-both_coverage = (
-    (burnout_data[ot_cols].sum(axis=1) > 0) &
-    (burnout_data[leave_cols].sum(axis=1) > 0)
-).sum()
-
-print("\n" + "=" * 65)
-print("FEATURE COVERAGE")
-print("=" * 65)
-
-print("Employees with OT:", ot_coverage)
-print("Employees with Leave:", leave_coverage)
-print("Employees with both:", both_coverage)
+=================================================================
+FEATURE COVERAGE
+=================================================================
+Employees with OT: 1895
+Employees with Leave: 943
+Employees with both: 205
