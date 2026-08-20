@@ -1,1 +1,66 @@
+# ============================================================
+# INDIVIDUAL EMPLOYEE BURNOUT ANALYSIS
+# ============================================================
 
+employee_code = 1009
+
+print("=" * 70)
+print(f"INDIVIDUAL BURNOUT ANALYSIS - EMPLOYEE {employee_code}")
+print("=" * 70)
+
+# ------------------------------------------------------------
+# 1. Get employee's burnout score and risk
+# ------------------------------------------------------------
+
+employee_result = burnout_scored[
+    burnout_scored["EMP_CODE_STD"].astype(str) == str(employee_code)
+]
+
+if employee_result.empty:
+    print(f"Employee {employee_code} not found.")
+else:
+
+    employee_row = employee_result.iloc[0]
+
+    print("\nBURNOUT SCORE")
+    print("-" * 40)
+    print("Employee Code :", employee_code)
+    print("Burnout Score :", employee_row["Burnout_Score"])
+    print("Burnout Risk  :", employee_row["Burnout_Risk"])
+
+    # --------------------------------------------------------
+    # 2. Employee's actual feature values
+    # --------------------------------------------------------
+
+    print("\nEMPLOYEE FEATURE VALUES")
+    print("-" * 40)
+
+    employee_values = burnout_model_data[
+        burnout_model_data["EMP_CODE_STD"].astype(str) == str(employee_code)
+    ]
+
+    if not employee_values.empty:
+        print(
+            employee_values.iloc[0][model_features]
+            .to_string()
+        )
+
+    # --------------------------------------------------------
+    # 3. Top individual burnout drivers
+    # --------------------------------------------------------
+
+    print("\nTOP INDIVIDUAL BURNOUT DRIVERS")
+    print("-" * 40)
+
+    top_drivers = (
+        employee_business_errors
+        .sort_values(
+            "Reconstruction_Error",
+            ascending=False
+        )
+        .head(10)
+    )
+
+    print(
+        top_drivers.to_string(index=False)
+    )
