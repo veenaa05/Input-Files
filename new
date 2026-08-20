@@ -1,1 +1,54 @@
+# ============================================================
+# STEP 14: GLOBAL BURNOUT FEATURE IMPORTANCE
+# ============================================================
 
+# Calculate squared reconstruction error for every feature
+feature_errors = np.square(X - X_reconstructed)
+
+print("=" * 60)
+print("FEATURE-LEVEL RECONSTRUCTION ERROR")
+print("=" * 60)
+
+print("Shape:", feature_errors.shape)
+
+
+# ------------------------------------------------------------
+# GET PROCESSED FEATURE NAMES
+# ------------------------------------------------------------
+
+processed_feature_names = (
+    preprocessor.get_feature_names_out()
+)
+
+print("\nNumber of processed features:",
+      len(processed_feature_names))
+
+print("\nProcessed features:")
+print(processed_feature_names)
+
+
+# ------------------------------------------------------------
+# GLOBAL FEATURE IMPORTANCE
+# ------------------------------------------------------------
+
+global_importance = pd.DataFrame({
+    "Processed_Feature": processed_feature_names,
+    "Mean_Reconstruction_Error": feature_errors.mean(axis=0)
+})
+
+global_importance = (
+    global_importance
+    .sort_values(
+        "Mean_Reconstruction_Error",
+        ascending=False
+    )
+    .reset_index(drop=True)
+)
+
+print("\n" + "=" * 60)
+print("TOP 20 PROCESSED FEATURES")
+print("=" * 60)
+
+print(
+    global_importance.head(20)
+)
