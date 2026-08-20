@@ -1,1 +1,187 @@
 
+# ============================================================
+# STEP 16: INDIVIDUAL BURNOUT EXPLANATION
+# ============================================================
+
+import numpy as np
+import pandas as pd
+
+# Employee to explain
+employee_id = 331498
+
+# ------------------------------------------------------------
+# 1. Make sure reconstructed data exists
+# ------------------------------------------------------------
+
+# If your reconstruction variable has a different name,
+# this cell will use the common variable "X_reconstructed".
+#
+# First check:
+print("X_processed shape:", X_processed.shape)
+print("X_reconstructed shape:", X_reconstructed.shape)
+
+
+# ------------------------------------------------------------
+# 2. Calculate FEATURE-LEVEL reconstruction errors
+# ------------------------------------------------------------
+
+feature_errors = np.square(
+    X_processed - X_reconstructed
+)
+
+
+# ------------------------------------------------------------
+# 3. Find employee
+# ------------------------------------------------------------
+
+employee_idx = burnout_model_data.index[
+    burnout_model_data["EMP_CODE_STD"].astype(str)
+    == str(employee_id)
+]
+
+
+if len(employee_idx) == 0:
+
+    print(f"Employee {employee_id} not found.")
+
+else:
+
+    idx = employee_idx[0]
+
+    # --------------------------------------------------------
+    # 4. Get processed feature names
+    # --------------------------------------------------------
+
+    try:
+        processed_feature_names = (
+            preprocessor.get_feature_names_out()
+        )
+    except:
+        processed_feature_names = [
+            f"Feature_{i}"
+            for i in range(X_processed.shape[1])
+        ]
+
+
+    print(
+        "Number of processed features:",
+        len(processed_feature_names)
+    )
+
+
+    # --------------------------------------------------------
+    # 5. Feature-level errors for this employee
+    # --------------------------------------------------------
+
+    employee_errors = pd.DataFrame({
+
+        "Processed_Feature":
+            processed_feature_names,
+
+        "Reconstruction_Error":
+            feature_errors[idx]
+
+    })
+
+
+    # --------------------------------------------------------
+    # 6. Map processed features back to business features
+    # --------------------------------------------------------
+
+    employee_errors["Original_Feature"] = (
+        employee_errors["Processed_Feature"]
+        .apply(get_original_feature)
+    )
+
+
+    # --------------------------------------------------------
+    # 7. Aggregate one-hot encoded features
+    # --------------------------------------------------------
+
+    employee_business_errors = (
+
+        employee_errors
+
+        .groupby(
+            "Original_Feature",
+            as_index=False
+        )
+
+        ["Reconstruction_Error"]
+
+        .sum()
+
+        .sort_values(
+            "Reconstruction_Error",
+            ascending=False
+        )
+
+        .reset_index(drop=True)
+
+    )
+
+
+    # --------------------------------------------------------
+    # 8. Print explanation
+    # --------------------------------------------------------
+
+    print("\n" + "=" * 65)
+    print(
+        f"INDIVIDUAL BURNOUT EXPLANATION - "
+        f"EMPLOYEE {employee_id}"
+    )
+    print("=" * 65)
+
+
+    print("\nTOP CONTRIBUTING FEATURES:")
+    print(
+        employee_business_errors
+        .head(15)
+        .to_string(index=False)
+    )
+
+
+    # --------------------------------------------------------
+    # 9. Employee burnout score
+    # --------------------------------------------------------
+
+    employee_score = burnout_model_data.loc[
+        idx,
+        "Burnout_Score"
+    ]
+
+    employee_risk = burnout_model_data.loc[
+        idx,
+        "Burnout_Risk"
+    ]
+
+
+    print("\n" + "=" * 65)
+    print("BURNOUT RESULT")
+    print("=" * 65)
+
+    print("Employee:", employee_id)
+    print("Burnout Score:", employee_score)
+    print("Burnout Risk:", employee_risk)
+
+
+    # --------------------------------------------------------
+    # 10. Employee actual feature values
+    # --------------------------------------------------------
+
+    print("\n" + "=" * 65)
+    print("EMPLOYEE FEATURE VALUES")
+    print("=" * 65)
+
+    available_features = [
+        col
+        for col in clean_features
+        if col in burnout_model_data.columns
+    ]
+
+    print(
+        burnout_model_data.loc[
+            idx,
+            available_features
+        ].to_string()
+    )
