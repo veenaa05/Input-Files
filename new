@@ -1,1 +1,44 @@
 
+# ============================================================
+# EMPLOYEE FEATURE VALUES - INDEPENDENT CELL
+# ============================================================
+
+# Your actual 24 model features
+feature_columns = [
+    "OT_Mean_Daily",
+    "OT_Max_Daily",
+    "OT_Total_Days",
+    "OT_High_Days",
+    "OT_Latest_Day",
+    "OT_Latest_Lag_1D",
+    "OT_Latest_Rolling_7D",
+    "OT_Latest_Rolling_14D",
+    "OT_Avg_Rolling_7D",
+    "OT_Avg_Rolling_14D",
+    "OT_Max_Rolling_7D",
+    "OT_Max_Rolling_14D",
+    "Leave_Total_Days",
+    "Leave_Applications",
+    "Leave_Avg_Days",
+    "Leave_Max_Days",
+    "Leave_Pending_Applications",
+    "Year Of Service (Current DOJ)",
+    "Department",
+    "Designation",
+    "Grade",
+    "Band",
+    "Employee Category",
+    "Branch"
+]
+
+# Check which dataframe contains these columns
+print("Checking dataframe...")
+
+print("burnout_model_data exists:",
+      "burnout_model_data" in globals())
+
+print("final_burnout_data exists:",
+      "final_burnout_data" in globals())
+
+print("burnout_data exists:",
+      "burnout_data" in globals())
