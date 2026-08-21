@@ -1,25 +1,4 @@
-# Check OT-related columns in the original dataset
-
-print("OT-related columns:")
-for col in burnout_data.columns:
-    if "ot" in col.lower() or "over" in col.lower():
-        print(col)
-
-
-
-
-
-
-# Check raw OT records for an employee with zero OT
-
-employee_to_check = "10145"
-
-print("Raw records for employee:", employee_to_check)
-
-check = burnout_data[
-    burnout_data["EMP_CODE_STD"].astype(str) == employee_to_check
-]
-
-print("Number of records:", len(check))
-
-print(check.to_string(index=False))
+Raw records for employee: 10145
+Number of records: 1
+                           Group                     Company Name Employee Code Title First Name Middle Name Last Name    Employee Name Gender Nationality  Official Email Address  Personal Email Address Resident Type Marital Status City Name  State Name         Branch    Site Branch   Division                Designation Department Sub Department                   Cost Center              Site Cost Center       Site Name Grade         Band Reason for Requirement Employee Category Employee Status Reporting Manager Code Reporting Manager Name Skip Level Manager Code Skip Level Manager Actual Join Date Group Join Date Resignation Date  Year Of Service (Current DOJ)  Year of Service (Group DOJ) Physical Disability Point of Hire Point of Repatriation ESIC Flag  ESIC Number PF Applicable     PF Type              PF Number    UAN Number FNF Settlement Date Probation Status Confirmation Date         Source of Hire Preferred Name Dual Nationality Religion  Agreement type Effective Start Date  Effective End Date Employee Air Ticket  Air Ticket Class Air Ticket frequency Blood Group Group Medical Insurance Confidential Profile Flag  Confidential Profile Conf. Date (Period Master) 2nd Nationality  Employer Notice Period Bank Name Movement Type PAN Number Aadhar Card No Account Number   IFSC Code  Personal Mobile Number  Emergency Contact Number Father Name Birth Date Last Payable Days Last Working Date    Cost Code  Profit Code Client Vertical Permanent Address Current Address Correspondence Address  Leave Status       Resident Wage Type   TAX Regime Uniform Deduction  Process Name EMP_CODE_STD  OT_Mean_Daily  OT_Max_Daily  OT_Total_Days  OT_High_Days  OT_Latest_Day  OT_Latest_Lag_1D  OT_Latest_Rolling_7D  OT_Latest_Rolling_14D  OT_Avg_Rolling_7D  OT_Avg_Rolling_14D  OT_Max_Rolling_7D  OT_Max_Rolling_14D  Leave_Total_Days  Leave_Applications  Leave_Avg_Days  Leave_Max_Days  Leave_Pending_Applications
+Property Solutions India Pvt Ltd Property Solutions India Pvt Ltd        '10145   Ms.     Sunita        Ajay      Mane Sunita Ajay Mane Female       India sunita.mane@psipl.co.in sunita.mane@psipl.co.in         Local         Single    Mumbai Maharashtra Mumbai Vikroli Mumbai Vikroli Not Define Assistant Facility Manager Operations            NaN NEELKANT BUSINESS PARK MUMBAI NEELKANT BUSINESS PARK MUMBAI NEELKANT MUMBAI    S4 White Collar                 Others         Permanent            Live                '331541    Rahul Arvind Tandel                 '261482         Montu Bose       2008-07-08      2008-07-08              NaT                             18                           18                  No           NaN                   NaN         N          NaN             Y PF on Gross MHBAN00457860000006109 '100371701770                 NaT        Confirmed               NaT Company Career Website         Sunita               No Hinduism             NaN           2023-08-05                 NaN                  No               NaN                   No         NaN                     NaN                       NaN                   NaN                        NaT           India                    30.0      NEFT    New Joinee AWCPM9245P  '945689146599  '119801500759 ICIC0000004            8928936983.0                       NaN         NaN 1982-06-22               NaT               NaT PSI-NBP21MUM   9001910412     Residential                                                                    NaN Site Permanent   Monthly New Tax Slab                NO           NaN        10145            0.0           0.0            0.0           0.0            0.0               0.0                   0.0                    0.0                0.0                 0.0                0.0                 0.0               0.0                 0.0             0.0             0.0                         0.0
