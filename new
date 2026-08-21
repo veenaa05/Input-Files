@@ -1,1 +1,38 @@
 
+# ============================================================
+# CHECK WHY OT VALUES ARE 0
+# ============================================================
+
+print("Employee 1009 OT values:")
+print(
+    burnout_model_data[
+        burnout_model_data["EMP_CODE_STD"].astype(str) == "1009"
+    ][[
+        "EMP_CODE_STD",
+        "OT_Mean_Daily",
+        "OT_Max_Daily",
+        "OT_Total_Days",
+        "OT_High_Days",
+        "OT_Latest_Day",
+        "OT_Latest_Rolling_7D",
+        "OT_Latest_Rolling_14D",
+        "OT_Avg_Rolling_7D",
+        "OT_Avg_Rolling_14D"
+    ]].to_string(index=False)
+)
+
+print("\nEmployees with completely zero OT:")
+zero_ot = burnout_model_data[
+    (burnout_model_data["OT_Mean_Daily"] == 0) &
+    (burnout_model_data["OT_Total_Days"] == 0) &
+    (burnout_model_data["OT_High_Days"] == 0)
+]
+
+print("Count:", len(zero_ot))
+
+print("\nSample:")
+print(
+    zero_ot[["EMP_CODE_STD"]]
+    .head(20)
+    .to_string(index=False)
+)
