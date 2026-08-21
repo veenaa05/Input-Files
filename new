@@ -1,1 +1,13 @@
+# Find all DataFrames that contain OT-related columns
 
+for name, obj in globals().items():
+    if isinstance(obj, pd.DataFrame):
+        ot_cols = [
+            c for c in obj.columns
+            if "ot" in str(c).lower() or "overtime" in str(c).lower()
+        ]
+
+        if ot_cols:
+            print("\nDATAFRAME:", name)
+            print("Shape:", obj.shape)
+            print("OT columns:", ot_cols)
