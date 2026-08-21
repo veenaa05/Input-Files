@@ -1,1 +1,25 @@
+# Check OT-related columns in the original dataset
 
+print("OT-related columns:")
+for col in burnout_data.columns:
+    if "ot" in col.lower() or "over" in col.lower():
+        print(col)
+
+
+
+
+
+
+# Check raw OT records for an employee with zero OT
+
+employee_to_check = "10145"
+
+print("Raw records for employee:", employee_to_check)
+
+check = burnout_data[
+    burnout_data["EMP_CODE_STD"].astype(str) == employee_to_check
+]
+
+print("Number of records:", len(check))
+
+print(check.to_string(index=False))
