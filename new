@@ -1,1 +1,15 @@
+Hi Sir,
+I have completed the Employee Burnout Prediction output and am sharing the Excel file for reference.
 
+The Excel contains Employee Code, Employee Name, Avg OT Hours, 7-Day Rolling Avg OT Hours, 14-Day Rolling Avg OT Hours, and Burnout Prediction (0/1) for each employee.
+
+Note: The OT values are represented in decimal hours. For example, 1.20 hours means 1 hour 12 minutes, not 1 hour 20 minutes.
+
+We have included both 7-day and 14-day rolling averages to capture OT patterns over two different time windows:
+
+* 7-Day Rolling Average: reflects the employee’s more recent OT pattern.
+* 14-Day Rolling Average: provides a slightly longer-term view and helps understand whether the OT pattern is consistently elevated rather than just a short-term increase.
+
+This gives an employee-level view of the burnout prediction along with the OT indicators used for analysis.
+
+Mithu Ma’am, could you please implement this in the dashboard for better visualization and understanding?
