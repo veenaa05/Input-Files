@@ -1,1 +1,25 @@
+# ============================================================
+# FINAL EMPLOYEE BURNOUT PREDICTION (0/1)
+# ============================================================
 
+import numpy as np
+import pandas as pd
+
+# Use P95 reconstruction error as burnout-risk threshold
+threshold = np.percentile(reconstruction_error, 95)
+
+# 1 = predicted at risk, 0 = not predicted at risk
+burnout_prediction = (reconstruction_error >= threshold).astype(int)
+
+# Create final output
+final_burnout_prediction = pd.DataFrame({
+    "EMP_CODE": burnout_scored["EMP_CODE_STD"].values,
+    "BURNOUT_PREDICTION": burnout_prediction
+})
+
+print("Burnout threshold:", threshold)
+print("\nPrediction distribution:")
+print(final_burnout_prediction["BURNOUT_PREDICTION"].value_counts())
+
+print("\nSample:")
+print(final_burnout_prediction.head(10))
