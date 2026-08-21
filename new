@@ -1,1 +1,8 @@
-
+# Round OT values for clean Excel output
+final_burnout_output["Avg OT Hours"] = final_burnout_output["Avg OT Hours"].round(2)
+final_burnout_output["7-Day Rolling Avg OT Hours"] = (
+    final_burnout_output["7-Day Rolling Avg OT Hours"].round(2)
+)
+final_burnout_output["14-Day Rolling Avg OT Hours"] = (
+    final_burnout_output["14-Day Rolling Avg OT Hours"].round(2)
+)
