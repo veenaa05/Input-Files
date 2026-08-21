@@ -1,13 +1,120 @@
-# Find all DataFrames that contain OT-related columns
 
-for name, obj in globals().items():
-    if isinstance(obj, pd.DataFrame):
-        ot_cols = [
-            c for c in obj.columns
-            if "ot" in str(c).lower() or "overtime" in str(c).lower()
-        ]
+DATAFRAME: employee_master
+Shape: (20486, 93)
+OT columns: ['Employer Notice Period']
 
-        if ot_cols:
-            print("\nDATAFRAME:", name)
-            print("Shape:", obj.shape)
-            print("OT columns:", ot_cols)
+DATAFRAME: leave_application
+Shape: (2554, 27)
+OT columns: ['Total Days']
+
+DATAFRAME: overtime_1
+Shape: (4539, 20)
+OT columns: ['CHARGEABLE TOTAL', 'NON CHARGEABLE TOTAL', 'TOTAL', ' CHARGEBLEOT FORMULA ', ' NONCHARGEBLE OT FORMULA']
+
+DATAFRAME: overtime_2
+Shape: (4539, 110)
+OT columns: ['01-JUN-26_TOT', '02-JUN-26_TOT', '03-JUN-26_TOT', '04-JUN-26_TOT', '05-JUN-26_TOT', '06-JUN-26_TOT', '07-JUN-26_TOT', '08-JUN-26_TOT', '09-JUN-26_TOT', '10-JUN-26_TOT', '11-JUN-26_TOT', '12-JUN-26_TOT', '13-JUN-26_TOT', '14-JUN-26_TOT', '15-JUN-26_TOT', '16-JUN-26_TOT', '17-JUN-26_TOT', '18-JUN-26_TOT', '19-JUN-26_TOT', '20-JUN-26_TOT', '21-JUN-26_TOT', '22-JUN-26_TOT', '23-JUN-26_TOT', '24-JUN-26_TOT', '25-JUN-26_TOT', '26-JUN-26_TOT', '27-JUN-26_TOT', '28-JUN-26_TOT', '29-JUN-26_TOT', '30-JUN-26_TOT', 'CHARGEABLE TOTAL', 'NON CHARGEABLE TOTAL', 'TOTAL', ' CHARGEBLEOT FORMULA ', ' NONCHARGEBLE OT FORMULA']
+
+DATAFRAME: resignation
+Shape: (501, 44)
+OT columns: ['Lwd As Per Notice Period']
+
+DATAFRAME: df
+Shape: (501, 44)
+OT columns: ['Lwd As Per Notice Period']
+
+DATAFRAME: ot
+Shape: (4539, 110)
+OT columns: ['01-JUN-26_TOT', '02-JUN-26_TOT', '03-JUN-26_TOT', '04-JUN-26_TOT', '05-JUN-26_TOT', '06-JUN-26_TOT', '07-JUN-26_TOT', '08-JUN-26_TOT', '09-JUN-26_TOT', '10-JUN-26_TOT', '11-JUN-26_TOT', '12-JUN-26_TOT', '13-JUN-26_TOT', '14-JUN-26_TOT', '15-JUN-26_TOT', '16-JUN-26_TOT', '17-JUN-26_TOT', '18-JUN-26_TOT', '19-JUN-26_TOT', '20-JUN-26_TOT', '21-JUN-26_TOT', '22-JUN-26_TOT', '23-JUN-26_TOT', '24-JUN-26_TOT', '25-JUN-26_TOT', '26-JUN-26_TOT', '27-JUN-26_TOT', '28-JUN-26_TOT', '29-JUN-26_TOT', '30-JUN-26_TOT', 'CHARGEABLE TOTAL', 'NON CHARGEABLE TOTAL', 'TOTAL', ' CHARGEBLEOT FORMULA ', ' NONCHARGEBLE OT FORMULA']
+
+DATAFRAME: ot_features
+Shape: (4539, 8)
+OT columns: ['OT_Total_Hours', 'OT_Avg_Daily', 'OT_Max_Daily', 'OT_Days', 'OT_High_Days', 'OT_Chargeable', 'OT_Non_Chargeable']
+
+DATAFRAME: leave
+Shape: (2554, 29)
+OT columns: ['Total Days']
+
+DATAFRAME: leave_features
+Shape: (1079, 6)
+OT columns: ['Leave_Total_Days']
+
+DATAFRAME: duplicates
+Shape: (35, 93)
+OT columns: ['Employer Notice Period']
+
+DATAFRAME: master
+Shape: (20486, 94)
+OT columns: ['Employer Notice Period']
+
+DATAFRAME: master_clean
+Shape: (20468, 93)
+OT columns: ['Employer Notice Period']
+
+DATAFRAME: burnout_data
+Shape: (20468, 110)
+OT columns: ['Employer Notice Period', 'OT_Mean_Daily', 'OT_Max_Daily', 'OT_Total_Days', 'OT_High_Days', 'OT_Latest_Day', 'OT_Latest_Lag_1D', 'OT_Latest_Rolling_7D', 'OT_Latest_Rolling_14D', 'OT_Avg_Rolling_7D', 'OT_Avg_Rolling_14D', 'OT_Max_Rolling_7D', 'OT_Max_Rolling_14D', 'Leave_Total_Days']
+
+DATAFRAME: duplicates_after_merge
+Shape: (8, 29)
+OT columns: ['OT_Total_Hours', 'OT_Avg_Daily', 'OT_Max_Daily', 'OT_Days', 'OT_High_Days', 'OT_Chargeable', 'OT_Non_Chargeable', 'Leave_Total_Days']
+
+DATAFRAME: ot_features_clean
+Shape: (4535, 8)
+OT columns: ['OT_Total_Hours', 'OT_Avg_Daily', 'OT_Max_Daily', 'OT_Days', 'OT_High_Days', 'OT_Chargeable', 'OT_Non_Chargeable']
+
+DATAFRAME: ot_daily
+Shape: (4539, 115)
+OT columns: ['01-JUN-26_TOT', '02-JUN-26_TOT', '03-JUN-26_TOT', '04-JUN-26_TOT', '05-JUN-26_TOT', '06-JUN-26_TOT', '07-JUN-26_TOT', '08-JUN-26_TOT', '09-JUN-26_TOT', '10-JUN-26_TOT', '11-JUN-26_TOT', '12-JUN-26_TOT', '13-JUN-26_TOT', '14-JUN-26_TOT', '15-JUN-26_TOT', '16-JUN-26_TOT', '17-JUN-26_TOT', '18-JUN-26_TOT', '19-JUN-26_TOT', '20-JUN-26_TOT', '21-JUN-26_TOT', '22-JUN-26_TOT', '23-JUN-26_TOT', '24-JUN-26_TOT', '25-JUN-26_TOT', '26-JUN-26_TOT', '27-JUN-26_TOT', '28-JUN-26_TOT', '29-JUN-26_TOT', '30-JUN-26_TOT', 'CHARGEABLE TOTAL', 'NON CHARGEABLE TOTAL', 'TOTAL', ' CHARGEBLEOT FORMULA ', ' NONCHARGEBLE OT FORMULA', 'OT_Total_Hours', 'OT_Days', 'OT_Max_Daily', 'OT_Avg_Daily', 'OT_High_Days']
+
+DATAFRAME: daily_ot_matrix
+Shape: (4539, 30)
+OT columns: ['01-JUN-26_TOT', '02-JUN-26_TOT', '03-JUN-26_TOT', '04-JUN-26_TOT', '05-JUN-26_TOT', '06-JUN-26_TOT', '07-JUN-26_TOT', '08-JUN-26_TOT', '09-JUN-26_TOT', '10-JUN-26_TOT', '11-JUN-26_TOT', '12-JUN-26_TOT', '13-JUN-26_TOT', '14-JUN-26_TOT', '15-JUN-26_TOT', '16-JUN-26_TOT', '17-JUN-26_TOT', '18-JUN-26_TOT', '19-JUN-26_TOT', '20-JUN-26_TOT', '21-JUN-26_TOT', '22-JUN-26_TOT', '23-JUN-26_TOT', '24-JUN-26_TOT', '25-JUN-26_TOT', '26-JUN-26_TOT', '27-JUN-26_TOT', '28-JUN-26_TOT', '29-JUN-26_TOT', '30-JUN-26_TOT']
+
+DATAFRAME: ot_long
+Shape: (136050, 7)
+OT columns: ['OT_Hours', 'OT_Lag_1_Day', 'OT_Rolling_7D', 'OT_Rolling_14D']
+
+DATAFRAME: ot_source
+Shape: (4535, 31)
+OT columns: ['01-JUN-26_TOT', '02-JUN-26_TOT', '03-JUN-26_TOT', '04-JUN-26_TOT', '05-JUN-26_TOT', '06-JUN-26_TOT', '07-JUN-26_TOT', '08-JUN-26_TOT', '09-JUN-26_TOT', '10-JUN-26_TOT', '11-JUN-26_TOT', '12-JUN-26_TOT', '13-JUN-26_TOT', '14-JUN-26_TOT', '15-JUN-26_TOT', '16-JUN-26_TOT', '17-JUN-26_TOT', '18-JUN-26_TOT', '19-JUN-26_TOT', '20-JUN-26_TOT', '21-JUN-26_TOT', '22-JUN-26_TOT', '23-JUN-26_TOT', '24-JUN-26_TOT', '25-JUN-26_TOT', '26-JUN-26_TOT', '27-JUN-26_TOT', '28-JUN-26_TOT', '29-JUN-26_TOT', '30-JUN-26_TOT']
+
+DATAFRAME: ot_trend_features
+Shape: (4535, 13)
+OT columns: ['OT_Mean_Daily', 'OT_Max_Daily', 'OT_Total_Days', 'OT_High_Days', 'OT_Latest_Day', 'OT_Latest_Lag_1D', 'OT_Latest_Rolling_7D', 'OT_Latest_Rolling_14D', 'OT_Avg_Rolling_7D', 'OT_Avg_Rolling_14D', 'OT_Max_Rolling_7D', 'OT_Max_Rolling_14D']
+
+DATAFRAME: burnout_model_data
+Shape: (20468, 25)
+OT columns: ['OT_Mean_Daily', 'OT_Max_Daily', 'OT_Total_Days', 'OT_High_Days', 'OT_Latest_Day', 'OT_Latest_Lag_1D', 'OT_Latest_Rolling_7D', 'OT_Latest_Rolling_14D', 'OT_Avg_Rolling_7D', 'OT_Avg_Rolling_14D', 'OT_Max_Rolling_7D', 'OT_Max_Rolling_14D', 'Leave_Total_Days']
+
+DATAFRAME: X_raw
+Shape: (20468, 23)
+OT columns: ['OT_Mean_Daily', 'OT_Max_Daily', 'OT_Total_Days', 'OT_High_Days', 'OT_Latest_Day', 'OT_Latest_Lag_1D', 'OT_Latest_Rolling_7D', 'OT_Latest_Rolling_14D', 'OT_Avg_Rolling_7D', 'OT_Avg_Rolling_14D', 'OT_Max_Rolling_7D', 'OT_Max_Rolling_14D', 'Leave_Total_Days']
+
+DATAFRAME: burnout_scored
+Shape: (20468, 27)
+OT columns: ['OT_Mean_Daily', 'OT_Max_Daily', 'OT_Total_Days', 'OT_High_Days', 'OT_Latest_Day', 'OT_Latest_Lag_1D', 'OT_Latest_Rolling_7D', 'OT_Latest_Rolling_14D', 'OT_Avg_Rolling_7D', 'OT_Avg_Rolling_14D', 'OT_Max_Rolling_7D', 'OT_Max_Rolling_14D', 'Leave_Total_Days']
+
+DATAFRAME: employee_result
+Shape: (1, 27)
+OT columns: ['OT_Mean_Daily', 'OT_Max_Daily', 'OT_Total_Days', 'OT_High_Days', 'OT_Latest_Day', 'OT_Latest_Lag_1D', 'OT_Latest_Rolling_7D', 'OT_Latest_Rolling_14D', 'OT_Avg_Rolling_7D', 'OT_Avg_Rolling_14D', 'OT_Max_Rolling_7D', 'OT_Max_Rolling_14D', 'Leave_Total_Days']
+
+DATAFRAME: employee_values
+Shape: (1, 25)
+OT columns: ['OT_Mean_Daily', 'OT_Max_Daily', 'OT_Total_Days', 'OT_High_Days', 'OT_Latest_Day', 'OT_Latest_Lag_1D', 'OT_Latest_Rolling_7D', 'OT_Latest_Rolling_14D', 'OT_Avg_Rolling_7D', 'OT_Avg_Rolling_14D', 'OT_Max_Rolling_7D', 'OT_Max_Rolling_14D', 'Leave_Total_Days']
+
+DATAFRAME: burnout_output
+Shape: (20468, 7)
+OT columns: ['OT_Mean_Daily', 'OT_Avg_Rolling_7D', 'OT_Avg_Rolling_14D']
+
+DATAFRAME: final_burnout_output
+Shape: (20468, 6)
+OT columns: ['Avg OT Hours', '7-Day Rolling Avg OT Hours', '14-Day Rolling Avg OT Hours']
+
+DATAFRAME: zero_ot
+Shape: (18573, 25)
+OT columns: ['OT_Mean_Daily', 'OT_Max_Daily', 'OT_Total_Days', 'OT_High_Days', 'OT_Latest_Day', 'OT_Latest_Lag_1D', 'OT_Latest_Rolling_7D', 'OT_Latest_Rolling_14D', 'OT_Avg_Rolling_7D', 'OT_Avg_Rolling_14D', 'OT_Max_Rolling_7D', 'OT_Max_Rolling_14D', 'Leave_Total_Days']
+
+DATAFRAME: check
+Shape: (1, 110)
+OT columns: ['Employer Notice Period', 'OT_Mean_Daily', 'OT_Max_Daily', 'OT_Total_Days', 'OT_High_Days', 'OT_Latest_Day', 'OT_Latest_Lag_1D', 'OT_Latest_Rolling_7D', 'OT_Latest_Rolling_14D', 'OT_Avg_Rolling_7D', 'OT_Avg_Rolling_14D', 'OT_Max_Rolling_7D', 'OT_Max_Rolling_14D', 'Leave_Total_Days']
