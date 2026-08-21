@@ -1,38 +1,29 @@
+Employee 1009 OT values:
+EMP_CODE_STD  OT_Mean_Daily  OT_Max_Daily  OT_Total_Days  OT_High_Days  OT_Latest_Day  OT_Latest_Rolling_7D  OT_Latest_Rolling_14D  OT_Avg_Rolling_7D  OT_Avg_Rolling_14D
+        1009            0.6           6.0            4.0           3.0            0.0              0.857143               0.857143           0.710635            0.632852
 
-# ============================================================
-# CHECK WHY OT VALUES ARE 0
-# ============================================================
+Employees with completely zero OT:
+Count: 18573
 
-print("Employee 1009 OT values:")
-print(
-    burnout_model_data[
-        burnout_model_data["EMP_CODE_STD"].astype(str) == "1009"
-    ][[
-        "EMP_CODE_STD",
-        "OT_Mean_Daily",
-        "OT_Max_Daily",
-        "OT_Total_Days",
-        "OT_High_Days",
-        "OT_Latest_Day",
-        "OT_Latest_Rolling_7D",
-        "OT_Latest_Rolling_14D",
-        "OT_Avg_Rolling_7D",
-        "OT_Avg_Rolling_14D"
-    ]].to_string(index=False)
-)
-
-print("\nEmployees with completely zero OT:")
-zero_ot = burnout_model_data[
-    (burnout_model_data["OT_Mean_Daily"] == 0) &
-    (burnout_model_data["OT_Total_Days"] == 0) &
-    (burnout_model_data["OT_High_Days"] == 0)
-]
-
-print("Count:", len(zero_ot))
-
-print("\nSample:")
-print(
-    zero_ot[["EMP_CODE_STD"]]
-    .head(20)
-    .to_string(index=False)
-)
+Sample:
+EMP_CODE_STD
+       10145
+       11006
+       11168
+       11603
+       11625
+       14000
+       14005
+       14589
+       14598
+       14976
+       15343
+       15651
+       15708
+       15976
+       16145
+       16166
+       16347
+       16993
+       17288
+       17366
