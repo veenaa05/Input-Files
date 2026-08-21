@@ -1,1 +1,100 @@
+# ============================================================
+# FINAL EMPLOYEE BURNOUT PREDICTION OUTPUT
+# ============================================================
 
+# Use the Autoencoder reconstruction error as the burnout score
+burnout_output = burnout_model_data[
+    [
+        "EMP_CODE_STD",
+        "OT_Mean_Daily",
+        "OT_Avg_Rolling_7D",
+        "OT_Avg_Rolling_14D"
+    ]
+].copy()
+
+# Add Autoencoder burnout score
+burnout_output["Burnout_Score"] = reconstruction_error
+
+# ------------------------------------------------------------
+# Define burnout prediction threshold
+# P95 = top 5% highest reconstruction-error employees
+# ------------------------------------------------------------
+threshold = burnout_output["Burnout_Score"].quantile(0.95)
+
+burnout_output["Burnout_Prediction"] = (
+    burnout_output["Burnout_Score"] >= threshold
+).astype(int)
+
+# ------------------------------------------------------------
+# Add Employee Name
+# ------------------------------------------------------------
+employee_names = employee_master[
+    ["EMP_CODE_STD", "Employee Name"]
+].drop_duplicates("EMP_CODE_STD")
+
+burnout_output = burnout_output.merge(
+    employee_names,
+    on="EMP_CODE_STD",
+    how="left"
+)
+
+# ------------------------------------------------------------
+# Final Excel columns
+# ------------------------------------------------------------
+final_burnout_output = burnout_output[
+    [
+        "EMP_CODE_STD",
+        "Employee Name",
+        "OT_Mean_Daily",
+        "OT_Avg_Rolling_7D",
+        "OT_Avg_Rolling_14D",
+        "Burnout_Prediction"
+    ]
+].copy()
+
+# Rename columns for Excel
+final_burnout_output.rename(
+    columns={
+        "EMP_CODE_STD": "Employee Code",
+        "OT_Mean_Daily": "Avg OT Hours",
+        "OT_Avg_Rolling_7D": "7-Day Rolling Avg OT Hours",
+        "OT_Avg_Rolling_14D": "14-Day Rolling Avg OT Hours",
+        "Burnout_Prediction": "Burnout Prediction"
+    },
+    inplace=True
+)
+
+# ------------------------------------------------------------
+# Export Excel
+# ------------------------------------------------------------
+output_file = "Employee_Burnout_Prediction.xlsx"
+
+final_burnout_output.to_excel(
+    output_file,
+    index=False
+)
+
+# ------------------------------------------------------------
+# Final verification
+# ------------------------------------------------------------
+print("=" * 60)
+print("EMPLOYEE BURNOUT PREDICTION COMPLETE")
+print("=" * 60)
+
+print(f"Total employees: {len(final_burnout_output)}")
+print(f"Burnout threshold (P95): {threshold:.6f}")
+
+print("\nPrediction distribution:")
+print(
+    final_burnout_output["Burnout Prediction"]
+    .value_counts()
+    .sort_index()
+)
+
+print("\nFinal columns:")
+print(final_burnout_output.columns.tolist())
+
+print(f"\nExcel saved as: {output_file}")
+
+print("\nFirst 10 records:")
+print(final_burnout_output.head(10).to_string(index=False))
