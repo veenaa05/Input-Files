@@ -1,15 +1,2 @@
-Hi Sir,
-I have completed the Employee Burnout Prediction output and am sharing the Excel file for reference.
-
-The Excel contains Employee Code, Employee Name, Avg OT Hours, 7-Day Rolling Avg OT Hours, 14-Day Rolling Avg OT Hours, and Burnout Prediction (0/1) for each employee.
-
-Note: The OT values are represented in decimal hours. For example, 1.20 hours means 1 hour 12 minutes, not 1 hour 20 minutes.
-
-We have included both 7-day and 14-day rolling averages to capture OT patterns over two different time windows:
-
-* 7-Day Rolling Average: reflects the employee’s more recent OT pattern.
-* 14-Day Rolling Average: provides a slightly longer-term view and helps understand whether the OT pattern is consistently elevated rather than just a short-term increase.
-
-This gives an employee-level view of the burnout prediction along with the OT indicators used for analysis.
-
-Mithu Ma’am, could you please implement this in the dashboard for better visualization and understanding?
+Shape: (20486, 92)
+Columns: ['Group', 'Company Name', 'Employee Code', 'Title', 'First Name', 'Middle Name', 'Last Name', 'Employee Name', 'Gender', 'Nationality', 'Official Email Address', 'Personal Email Address', 'Resident Type', 'Marital Status', 'City Name', 'State Name', 'Branch', 'Site Branch', 'Division', 'Designation', 'Department', 'Sub Department', 'Cost Center', 'Site Cost Center', 'Site Name', 'Grade', 'Band', 'Reason for Requirement', 'Employee Category', 'Employee Status', 'Reporting Manager Code', 'Reporting Manager Name', 'Skip Level Manager Code', 'Skip Level Manager', 'Actual Join Date', 'Group Join Date', 'Resignation Date', 'Year Of Service (Current DOJ)', 'Year of Service (Group DOJ)', 'Physical Disability', 'Point of Hire', 'Point of Repatriation', 'ESIC Flag', 'ESIC Number', 'PF Applicable', 'PF Type', 'PF Number', 'UAN Number', 'FNF Settlement Date', 'Probation Status', 'Confirmation Date', 'Source of Hire', 'Preferred Name', 'Dual Nationality', 'Religion', 'Agreement type', 'Effective Start Date', 'Effective End Date', 'Employee Air Ticket', 'Air Ticket Class', 'Air Ticket frequency', 'Blood Group', 'Group Medical Insurance', 'Confidential Profile Flag', 'Confidential Profile', 'Conf. Date (Period Master)', '2nd Nationality', 'Employer Notice Period', 'Bank Name', 'Movement Type', 'PAN Number', 'Aadhar Card No', 'Account Number', 'IFSC Code', 'Personal Mobile Number', 'Emergency Contact Number', 'Father Name', 'Birth Date', 'Last Payable Days', 'Last Working Date', 'Cost Code', 'Profit Code', 'Client Vertical', 'Permanent Address', 'Current Address', 'Correspondence Address', 'Leave Status', 'Resident', 'Wage Type', 'TAX Regime', 'Uniform Deduction', 'Process Name']
