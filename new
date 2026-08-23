@@ -1,1 +1,19 @@
+# Check records where Agreed Lwd is before Resignation Date
 
+invalid_lwd = valid_resignations[
+    valid_resignations['Agreed Lwd'] < valid_resignations['Resignation Date']
+].copy()
+
+print("Agreed LWD before Resignation Date:", len(invalid_lwd))
+
+display(
+    invalid_lwd[
+        ['Employee Code',
+         'Resignation Date',
+         'Lwd As Per Notice Period',
+         'Requested Relieving Date',
+         'Agreed Lwd',
+         'Approved Date',
+         'Resignation Status']
+    ].sort_values('Resignation Date').head(30)
+)
