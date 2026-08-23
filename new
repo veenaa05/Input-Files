@@ -1,1 +1,68 @@
 
+# Monthly historical headcount
+
+employee_master['Date Of Joining'] = pd.to_datetime(
+    employee_master['Date Of Joining'], errors='coerce'
+)
+
+valid_resignations['Agreed Lwd'] = pd.to_datetime(
+    valid_resignations['Agreed Lwd'], errors='coerce'
+)
+
+# Employee -> final approved LWD
+exit_lwd = (
+    valid_resignations
+    [['Employee Code', 'Agreed Lwd']]
+    .drop_duplicates('Employee Code')
+)
+
+# Merge approved LWD into Employee Master
+headcount_data = employee_master.merge(
+    exit_lwd,
+    on='Employee Code',
+    how='left',
+    suffixes=('', '_exit')
+)
+
+# Monthly dates
+start_month = headcount_data['Date Of Joining'].min().to_period('M')
+end_month = pd.Timestamp.today().to_period('M')
+
+months = pd.period_range(start_month, end_month, freq='M')
+
+monthly_headcount = []
+
+for month in months:
+    month_end = month.to_timestamp('M')
+
+    active = (
+        (headcount_data['Date Of Joining'] <= month_end) &
+        (
+            headcount_data['Agreed Lwd'].isna() |
+            (headcount_data['Agreed Lwd'] > month_end)
+        )
+    )
+
+    monthly_headcount.append({
+        'Month': month.to_timestamp(),
+        'Headcount': active.sum()
+    })
+
+monthly_headcount = pd.DataFrame(monthly_headcount)
+
+display(monthly_headcount)
+
+
+
+
+/////
+print("Historical months:", len(monthly_headcount))
+print("Minimum headcount:", monthly_headcount['Headcount'].min())
+print("Maximum headcount:", monthly_headcount['Headcount'].max())
+
+display(monthly_headcount.tail(12))
+
+
+
+print(employee_master.columns.tolist())
+print(valid_resignations.columns.tolist())
