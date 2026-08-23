@@ -1,15 +1,1 @@
-# Check whether multiple resignation records exist for the same employee
 
-duplicate_resignations = (
-    resignation_report[
-        resignation_codes.duplicated(keep=False)
-    ][[
-        'Employee Code',
-        'Resignation Date',
-        'Agreed Lwd',
-        'Resignation Status'
-    ]]
-    .sort_values('Employee Code')
-)
-
-display(duplicate_resignations.head(30))
