@@ -1,1 +1,42 @@
+# Check which exit-date fields are available and how complete they are
 
+exit_cols = [
+    'Resignation Date',
+    'Lwd As Per Notice Period',
+    'Requested Relieving Date',
+    'Agreed Lwd',
+    'Approved Date'
+]
+
+for col in exit_cols:
+    resignation_report[col] = pd.to_datetime(
+        resignation_report[col],
+        errors='coerce'
+    )
+
+print("Missing values in exit-related dates:\n")
+print(resignation_report[exit_cols].isna().sum())
+
+print("\nSample of exit dates:")
+display(
+    resignation_report[
+        ['Employee Code', 'Resignation Status', 'Resignation Type'] + exit_cols
+    ].head(20)
+)
+
+
+
+/////////////
+# Check approved/rejected/revoked records separately
+
+status_summary = (
+    resignation_report.groupby('Resignation Status')
+    .agg(
+        records=('Employee Code', 'count'),
+        agreed_lwd=('Agreed Lwd', 'count'),
+        approved_date=('Approved Date', 'count')
+    )
+    .sort_values('records', ascending=False)
+)
+
+display(status_summary)
