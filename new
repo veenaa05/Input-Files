@@ -1,1 +1,46 @@
+# Prepare employee master
 
+employee_master['Actual Join Date'] = pd.to_datetime(
+    employee_master['Actual Join Date'],
+    errors='coerce'
+)
+
+valid_resignations['Agreed Lwd'] = pd.to_datetime(
+    valid_resignations['Agreed Lwd'],
+    errors='coerce'
+)
+
+# Employee codes as strings for reliable matching
+employee_master['Employee Code'] = (
+    employee_master['Employee Code'].astype(str).str.strip()
+)
+
+valid_resignations['Employee Code'] = (
+    valid_resignations['Employee Code'].astype(str).str.strip()
+)
+
+# Keep employees with valid joining dates
+employees = employee_master[
+    employee_master['Actual Join Date'].notna()
+].copy()
+
+# Approved exit records with valid LWD
+exits = valid_resignations[
+    valid_resignations['Agreed Lwd'].notna()
+][['Employee Code', 'Agreed Lwd']].copy()
+
+# One final exit date per employee
+exits = (
+    exits.sort_values('Agreed Lwd')
+         .drop_duplicates('Employee Code', keep='last')
+)
+
+# Merge exit date with employee master
+employees = employees.merge(
+    exits,
+    on='Employee Code',
+    how='left'
+)
+
+print("Employees:", len(employees))
+print("Employees with approved LWD:", employees['Agreed Lwd'].notna().sum())
