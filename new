@@ -1,1 +1,28 @@
+# Check Resignation Report date and status information
 
+resignation_report['Resignation Date'] = pd.to_datetime(
+    resignation_report['Resignation Date'],
+    errors='coerce'
+)
+
+resignation_report['Date Of Joining'] = pd.to_datetime(
+    resignation_report['Date Of Joining'],
+    errors='coerce'
+)
+
+print("Resignation Date range:")
+print("Min:", resignation_report['Resignation Date'].min())
+print("Max:", resignation_report['Resignation Date'].max())
+
+print("\nMissing Resignation Dates:",
+      resignation_report['Resignation Date'].isna().sum())
+
+print("\nResignation Status:")
+print(resignation_report['Resignation Status'].value_counts(dropna=False))
+
+print("\nResignation Type:")
+print(resignation_report['Resignation Type'].value_counts(dropna=False).head(
+
+
+
+20))
