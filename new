@@ -1,1 +1,18 @@
+# Monthly resignation count
 
+resignation_report['Resignation Month'] = (
+    resignation_report['Resignation Date']
+    .dt.to_period('M')
+)
+
+monthly_resignations = (
+    resignation_report
+    .dropna(subset=['Resignation Date'])
+    .groupby('Resignation Month')
+    .size()
+    .reset_index(name='resigned_employees')
+)
+
+print(monthly_resignations)
+
+print("\nNumber of months:", len(monthly_resignations))
