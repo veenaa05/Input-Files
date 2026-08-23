@@ -1,1 +1,150 @@
+# Export Overall Workforce Forecast to Excel
 
+import pandas as pd
+
+output_file = "Overall_Workforce_Headcount_Forecast.xlsx"
+
+# -----------------------------
+# 1. Future Headcount
+# -----------------------------
+
+forecast_output = future_headcount.copy()
+
+forecast_output = forecast_output.rename(
+    columns={
+        'ds': 'Month'
+    }
+)
+
+forecast_output['Month'] = pd.to_datetime(
+    forecast_output['Month']
+).dt.strftime('%Y-%m-%d')
+
+
+# -----------------------------
+# 2. Model Evaluation
+# -----------------------------
+
+model_evaluation = pd.DataFrame({
+    'Metric': ['MAE', 'RMSE', 'MAPE'],
+    'Value': [
+        1550.33,
+        2010.21,
+        8.42
+    ]
+})
+
+model_info = pd.DataFrame({
+    'Parameter': [
+        'Model',
+        'Historical Window',
+        'Changepoint Prior Scale',
+        'Forecast Horizon',
+        'Latest Historical Month',
+        'Latest Historical Headcount'
+    ],
+    'Value': [
+        'Prophet',
+        '36 months',
+        0.05,
+        '6 months',
+        '2026-07-31',
+        20225
+    ]
+})
+
+
+# -----------------------------
+# 3. Historical Headcount
+# -----------------------------
+
+historical_output = monthly_headcount.copy()
+
+historical_output = historical_output.rename(
+    columns={
+        'Month': 'Month',
+        'Headcount': 'Headcount'
+    }
+)
+
+historical_output['Month'] = pd.to_datetime(
+    historical_output['Month']
+).dt.strftime('%Y-%m-%d')
+
+
+# -----------------------------
+# Write Excel
+# -----------------------------
+
+with pd.ExcelWriter(
+    output_file,
+    engine='openpyxl'
+) as writer:
+
+    forecast_output.to_excel(
+        writer,
+        sheet_name='Future Headcount',
+        index=False
+    )
+
+    model_evaluation.to_excel(
+        writer,
+        sheet_name='Model Evaluation',
+        index=False,
+        startrow=0
+    )
+
+    model_info.to_excel(
+        writer,
+        sheet_name='Model Evaluation',
+        index=False,
+        startrow=6
+    )
+
+    historical_output.to_excel(
+        writer,
+        sheet_name='Historical Headcount',
+        index=False
+    )
+
+
+# -----------------------------
+# Basic Excel formatting
+# -----------------------------
+
+from openpyxl import load_workbook
+from openpyxl.styles import Font, PatternFill, Alignment
+
+wb = load_workbook(output_file)
+
+for ws in wb.worksheets:
+
+    # Header formatting
+    for cell in ws[1]:
+        cell.font = Font(bold=True)
+        cell.alignment = Alignment(horizontal='center')
+
+    # Column widths
+    for column in ws.columns:
+        max_length = 0
+        column_letter = column[0].column_letter
+
+        for cell in column:
+            if cell.value is not None:
+                max_length = max(
+                    max_length,
+                    len(str(cell.value))
+                )
+
+        ws.column_dimensions[column_letter].width = min(
+            max_length + 3,
+            30
+        )
+
+    ws.freeze_panes = 'A2'
+
+
+wb.save(output_file)
+
+print("Excel file created successfully:")
+print(output_file)
