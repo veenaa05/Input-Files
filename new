@@ -1,2 +1,1 @@
-# Check employee status values
-print(df['Employee Status'].value_counts(dropna=False))
+
