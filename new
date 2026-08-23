@@ -1,1 +1,52 @@
+# Train final Prophet model on all historical data
 
+final_model = Prophet(
+    yearly_seasonality=True,
+    weekly_seasonality=False,
+    daily_seasonality=False
+)
+
+final_model.fit(prophet_data)
+
+////////////
+# Forecast future headcount for next 6 months
+
+future = final_model.make_future_dataframe(
+    periods=6,
+    freq='ME'
+)
+
+forecast = final_model.predict(future)
+
+future_headcount = forecast[
+    forecast['ds'] > prophet_data['ds'].max()
+][[
+    'ds',
+    'yhat',
+    'yhat_lower',
+    'yhat_upper'
+]].copy()
+
+future_headcount['Forecast Headcount'] = (
+    future_headcount['yhat']
+    .round()
+    .astype(int)
+)
+
+future_headcount['Lower Bound'] = (
+    future_headcount['yhat_lower']
+    .round()
+    .astype(int)
+)
+
+future_headcount['Upper Bound'] = (
+    future_headcount['yhat_upper']
+    .round()
+    .astype(int)
+)
+
+future_headcount = future_headcount[
+    ['ds', 'Forecast Headcount', 'Lower Bound', 'Upper Bound']
+]
+
+display(future_headcount)
