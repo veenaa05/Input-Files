@@ -1,5 +1,1 @@
-print("Historical months:", len(monthly_headcount))
-print("First month:", monthly_headcount['Month'].min())
-print("Last month:", monthly_headcount['Month'].max())
-print("Latest completed headcount:",
-      monthly_headcount.iloc[-1]['Headcount'])
+
