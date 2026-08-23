@@ -1,1 +1,41 @@
+# Remove future joining records
+employees_forecast = employees[
+    employees['Actual Join Date'] <= pd.Timestamp.today()
+].copy()
 
+# Create monthly historical headcount up to the latest completed month
+
+start_month = employees_forecast['Actual Join Date'].min().to_period('M')
+end_month = (pd.Timestamp.today() - pd.offsets.MonthEnd(1)).to_period('M')
+
+months = pd.period_range(
+    start=start_month,
+    end=end_month,
+    freq='M'
+)
+
+monthly_headcount = []
+
+for month in months:
+
+    month_end = month.to_timestamp('M')
+
+    joined = (
+        employees_forecast['Actual Join Date'] <= month_end
+    )
+
+    not_exited = (
+        employees_forecast['Agreed Lwd'].isna() |
+        (employees_forecast['Agreed Lwd'] > month_end)
+    )
+
+    headcount = (joined & not_exited).sum()
+
+    monthly_headcount.append({
+        'Month': month_end,
+        'Headcount': int(headcount)
+    })
+
+monthly_headcount = pd.DataFrame(monthly_headcount)
+
+display(monthly_headcount.tail(12))
