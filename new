@@ -1,4 +1,1 @@
-# Check Employee Master columns related to exit / leaving
-[col for col in employee_master.columns
- if any(x in col.lower() for x in
-        ['exit', 'leave', 'reliev', 'resign', 'last working', 'lwd'])]
+
