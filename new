@@ -1,1 +1,31 @@
+# Check Resignation Report
 
+print("Shape:", resignation_report.shape)
+
+print("\nColumns:")
+print(resignation_report.columns.tolist())
+
+print("\nFirst 5 rows:")
+display(resignation_report.head())
+
+print("\nData types:")
+print(resignation_report.dtypes)
+
+
+
+
+
+# Check date-related columns in Resignation Report
+
+date_cols = [
+    col for col in resignation_report.columns
+    if 'date' in col.lower()
+    or 'doj' in col.lower()
+    or 'exit' in col.lower()
+    or 'resign' in col.lower()
+]
+
+print("Possible date columns:")
+print(date_cols)
+
+display(resignation_report[date_cols].head(10))
