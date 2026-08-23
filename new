@@ -1,1 +1,9 @@
+print(
+    "Latest calculated headcount:",
+    monthly_headcount.iloc[-1]['Headcount']
+)
 
+print(
+    "Current Employee Master:",
+    len(employee_master)
+)
