@@ -1,1 +1,42 @@
+# Check date ranges and resignation/notice details
 
+print("Actual Join Date range:")
+print("Min:", employee_master['Actual Join Date'].min())
+print("Max:", employee_master['Actual Join Date'].max())
+
+print("\nResignation Date range:")
+print("Min:", employee_master['Resignation Date'].min())
+print("Max:", employee_master['Resignation Date'].max())
+
+print("\nLast Working Date range:")
+print("Min:", employee_master['Last Working Date'].min())
+print("Max:", employee_master['Last Working Date'].max())
+
+print("\nStatus vs available dates:")
+display(
+    employee_master.groupby('Employee Status')[
+        ['Actual Join Date', 'Resignation Date', 'Last Working Date']
+    ].agg(['count', 'min', 'max'])
+
+
+
+///////////////
+
+# Check employees who have resignation / last working dates
+
+print("Employees with Resignation Date:",
+      employee_master['Resignation Date'].notna().sum())
+
+print("Employees with Last Working Date:",
+      employee_master['Last Working Date'].notna().sum())
+
+print("\nSample On-Notice employees:")
+display(
+    employee_master.loc[
+        employee_master['Employee Status'] == 'On-Notice',
+        ['Employee Code', 'Employee Status',
+         'Actual Join Date', 'Resignation Date', 'Last Working Date']
+    ].head(20)
+)
+
+)
