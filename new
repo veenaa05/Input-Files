@@ -1,7 +1,1 @@
-print("Date Of Joined data type:", df["Date Of Joined"].dtype)
 
-print("\nMissing Date Of Joined:")
-print(df["Date Of Joined"].isna().sum())
-
-print("\nSample values:")
-print(df["Date Of Joined"].head(10))
