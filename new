@@ -1,1 +1,8 @@
+# Step 2B: Check Employee Master employee status
 
+print("========== EMPLOYEE STATUS ==========")
+
+print(
+    employee_master["Employee Status"]
+    .value_counts(dropna=False)
+)
