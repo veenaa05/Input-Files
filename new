@@ -1,1 +1,12 @@
+# Step 1: Basic dataset summary
 
+print("========== NEW JOINERS REPORT ==========")
+print("Rows:", new_joiners.shape[0])
+print("Columns:", new_joiners.shape[1])
+
+print("\nDate Of Joined range:")
+print("Minimum:", pd.to_datetime(new_joiners["Date Of Joined"], errors="coerce").min())
+print("Maximum:", pd.to_datetime(new_joiners["Date Of Joined"], errors="coerce").max())
+
+print("\nEmployee Status:")
+print(new_joiners["Employee Status"].value_counts(dropna=False))
