@@ -1,1 +1,8 @@
+# Step 2: Employee Master - basic inspection
 
+print("========== EMPLOYEE MASTER ==========")
+print("Rows:", employee_master.shape[0])
+print("Columns:", employee_master.shape[1])
+
+print("\nColumn names:")
+print(employee_master.columns.tolist())
