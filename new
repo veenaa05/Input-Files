@@ -1,1 +1,25 @@
+# Apply filters safely against the current dataset
+filtered_df = df.copy()
 
+if isinstance(filter_selections, list) and isinstance(filter_values, list):
+
+    for filter_sel, filter_value in zip(filter_selections, filter_values):
+
+        if not isinstance(filter_sel, dict):
+            continue
+
+        col = filter_sel.get('column', '')
+
+        # Ignore filters whose column does not exist
+        # in the current uploaded dataset
+        if not col or col not in filtered_df.columns:
+            print(
+                f"[WARN] Ignoring invalid filter column "
+                f"'{col}' - not present in current dataset"
+            )
+            continue
+
+        if filter_value and filter_value != "All":
+            filtered_df = filtered_df[
+                filtered_df[col].astype(str) == str(filter_value)
+            ]
