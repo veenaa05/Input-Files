@@ -1,1 +1,42 @@
+    # ============================================================
+    # VALIDATE KPI & FILTERS AGAINST CURRENT DATASET
+    # ============================================================
 
+    if not isinstance(kpi_selections, list):
+        kpi_selections = []
+
+    if not isinstance(filter_selections, list):
+        filter_selections = []
+
+    if not isinstance(confirmed_dtypes, dict):
+        confirmed_dtypes = {}
+
+    # Keep only KPIs whose columns exist in the CURRENT dataset
+    kpi_selections = [
+        kpi for kpi in kpi_selections
+        if isinstance(kpi, dict)
+        and kpi.get('column')
+        and kpi.get('column') in df.columns
+    ]
+
+    # Keep only filters whose columns exist in the CURRENT dataset
+    filter_selections = [
+        filt for filt in filter_selections
+        if isinstance(filt, dict)
+        and filt.get('column')
+        and filt.get('column') in df.columns
+    ]
+
+    print(
+        "[DASHBOARD] Valid KPI columns:",
+        [k.get('column') for k in kpi_selections]
+    )
+
+    print(
+        "[DASHBOARD] Valid Filter columns:",
+        [f.get('column') for f in filter_selections]
+    )
+
+    # ============================================================
+    # GENERATE DEFAULTS IF NOTHING VALID REMAINS
+    # ============================================================
