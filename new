@@ -1,2 +1,164 @@
-If we download PDF > it is showing AI DATA INSIGHT REPORT.There should be option to download "Analysis & Insights Interactive visualizations for deeper understanding" report export option.
+  @app.callback(
+        Output('charts-container', 'children'),
+        [   Input({'type': 'filter-dropdown', 'index': ALL}, 'value'),
+            Input('store-ai-suggestions', 'data'),
+            Input('store-filter-selections-dashboard', 'data')],
+        prevent_initial_call=False
+    )
+    
+    def update_charts(filter_values, ai_suggestions, filter_selections):
+        import dash
+        ctx = dash.callback_context
+        
+        print("=" *80)
+        print("UPDATE_CHARTS FIRED")
+        print("TRIGGERED:", ctx.triggered)
+        print("AI_SUGGESTIONS TYPE:", type(ai_suggestions))
+        print("AI_SUGGESTIONS VALUE:", ai_suggestions)
+        print("=" *80)
+            
+        """Render AI-suggested charts when available, else auto-generate from data."""
+        import plotly.graph_objects as go
 
+        try:
+            if not get_cached_df:
+                return html.Div("Error: Data loading not configured")
+
+            df = get_cached_df()
+            if df is None:
+                return html.Div("Error: Could not load cached data", style={'color': '#DC2626'})
+            
+            # Apply filters safely against the current dataset
+            filtered_df = df.copy()
+            if isinstance(filter_selections, list) and isinstance(filter_values, list):
+                for filter_sel, filter_value in zip(filter_selections, filter_values):
+                    if not isinstance(filter_sel, dict):
+                        continue
+                    col = filter_sel.get('column', '')
+                    # Ignore filters whose column does not exist
+                    # in the current uploaded dataset
+                    if not col or col not in filtered_df.columns:
+                        print(
+                            f"[WARN] Ignoring invalid filter column "
+                            f"'{col}' - not present in current dataset"
+                        )
+                        continue
+
+                    if filter_value and filter_value != "All":
+                        filtered_df = filtered_df[
+                            filtered_df[col].astype(str) == str(filter_value)
+                        ]
+
+            # # Apply filters
+            # filtered_df = df.copy()
+            # if filter_selections and filter_values:
+            #     for filter_sel, filter_value in zip(filter_selections, filter_values):
+            #         col = filter_sel.get('column', '')
+            #         if filter_value and filter_value != "All" and col in filtered_df.columns:
+            #             filtered_df = filtered_df[filtered_df[col].astype(str) == str(filter_value)]
+
+            print(f"[CHARTS] Generating charts for {len(filtered_df):,} rows")
+
+            # Safety coercion pass — handles pandas 3.0 StringDtype columns
+            # (dtype prints as 'str' not 'object', so we use not is_numeric_dtype).
+            filtered_df = filtered_df.copy()
+            for col in list(filtered_df.columns):
+                if not is_numeric_dtype(filtered_df[col]):
+                    try:
+                        cleaned = filtered_df[col].astype(str).str.replace(r'[,₹$€£]', '', regex=True).str.strip()
+                        converted = pd.to_numeric(cleaned, errors='coerce')
+                        if converted.notna().sum() / max(len(filtered_df), 1) > 0.5:
+                            filtered_df[col] = converted
+                    except Exception:
+                        pass
+
+            # Classify columns
+            cat_cols = [c for c in filtered_df.columns
+                        if (filtered_df[c].dtype == 'object' or is_string_dtype(filtered_df[c]))
+                        and 2 <= filtered_df[c].nunique() <= 50]
+            n_rows = len(filtered_df)
+            # Cardinality threshold: relaxed for small filtered sets (avoid excluding
+            # continuous metrics like Amount when only a few hundred rows remain)
+            card_thresh = 0.95 if n_rows < 5000 else 0.8
+            num_cols = [c for c in filtered_df.columns
+                        if is_numeric_dtype(filtered_df[c])
+                        and filtered_df[c].nunique() > 1
+                        and filtered_df[c].notna().sum() > 0
+                        and not c.startswith('Unnamed')
+                        and (filtered_df[c].nunique() / n_rows) < card_thresh]
+
+            print(f"[CHARTS] Found {len(cat_cols)} categorical, {len(num_cols)} numeric columns")
+
+            chart_divs = []
+            pending_charts = []  # (fig, label, x_col, y_col, chart_type)
+
+            CHART_STYLE = {
+                'background': '#FFFFFF',
+                'borderRadius': '8px',
+                'padding': '4px',
+                'boxShadow': '0 2px 8px rgba(0,0,0,0.08)',
+            }
+            LAYOUT_ARGS = dict(
+                height=400,
+                margin=dict(l=60, r=30, t=70, b=80),
+                paper_bgcolor='#FFFFFF',
+                plot_bgcolor='#FAFBFC',
+                font=dict(color='#1A1F2E', size=11),
+                title_font=dict(size=15, color='#1A365D', family='Arial, sans-serif'),
+                showlegend=True,
+                legend=dict(
+                    x=0.01, y=0.99,
+                    bgcolor='rgba(255, 255, 255, 0.8)',
+                    bordercolor='#E5E7EB',
+                    borderwidth=1,
+                    font=dict(size=10)
+                ),
+                hovermode='x unified',
+                xaxis=dict(showgrid=True, gridwidth=1, gridcolor='#F0F0F0'),
+                yaxis=dict(showgrid=True, gridwidth=1, gridcolor='#F0F0F0'),
+                clickmode='event+select',  # Enable click events
+            )
+
+            def make_card(fig, label, chart_index=0, precomputed_insight=None):
+                fig.update_layout(**LAYOUT_ARGS)
+                fig_dict = fig.to_dict() if hasattr(fig, 'to_dict') else fig
+                insight = _describe_figure(fig_dict, filtered_df)
+                # insight = precomputed_insight if precomputed_insight is not None else _describe_figure(fig_dict, filtered_df)
+                insight_el = html.Div([
+                    html.Div([
+                        html.Span("ANALYST INSIGHT", style={
+                            'fontSize': '9px', 'fontWeight': '800',
+                            'textTransform': 'uppercase', 'letterSpacing': '0.12em',
+                            'backgroundColor': '#1A365D', 'color': 'white',
+                            'padding': '3px 10px', 'borderRadius': '3px',
+                            'marginRight': '12px', 'flexShrink': '0',
+                        }),
+                        html.Span(insight or "—", style={
+                            'color': '#1A1F2E', 'fontSize': '12px', 'lineHeight': '1.75',
+                            'fontStyle': 'normal',
+                        }),
+                    ], style={
+                        'display': 'flex', 'alignItems': 'flex-start', 'gap': '4px',
+                    }),
+                ], style={
+                    'padding': '12px 16px',
+                    'borderTop': '1px solid #E2E8F0',
+                    'borderLeft': '4px solid #1A365D',
+                    'backgroundColor': '#F8FAFF',
+                    'borderRadius': '0 0 8px 8px',
+                    'margin': '0',
+                }) if insight else html.Div(style={'display': 'none'})
+
+                return html.Div([
+                    dcc.Graph(
+                        id={'type': 'chart-graph', 'index': chart_index},
+                        figure=fig,
+                        config={'displayModeBar': False},
+                        style={'marginBottom': '0'}
+                    ),
+                    # Static description — no callback needed, generated inline
+                    html.Div(
+                        id={'type': 'chart-description', 'index': chart_index},
+                        children=insight_el,
+                    ),
+                ], style=CHART_STYLE)
